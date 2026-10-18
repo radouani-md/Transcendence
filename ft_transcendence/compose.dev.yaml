@@ -50,6 +50,7 @@ services:
     
     environment:
       DATABASE_URL: ${SOCIAL_DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
     
     ports:
       - "127.0.0.1:3002:3000"
