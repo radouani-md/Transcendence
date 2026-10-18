@@ -4,6 +4,7 @@ import { PrismaService } from "../prisma/prisma.service.js";
 import * as bcrypt from 'bcryptjs'
 import { LoginDto } from "./dtos/login.dto.js";
 import { JwtService } from "@nestjs/jwt";
+import { Role } from '../generated/prisma/enums.js';
 
 @Injectable()
 export class UserService {
@@ -14,8 +15,9 @@ export class UserService {
     ) {}
 
     public async register(registerDto: RegisterDto){
-        const { email, password, username} = registerDto;
+        const { email, password, username, role} = registerDto;
 
+        // this user is from table (this method of prisma interects)
         const user = await this.prisma.user.findUnique({
             where: { email }
         })
@@ -29,16 +31,18 @@ export class UserService {
             data: {
                 email,
                 username,
+                role,   
                 password: hashedPass
             },
             select:{
                 id: true,
                 email: true,
-                username:true
+                role:true
             }
         })
         const accessToken = await this.jwtService.signAsync({
-            sub: newUser.id
+            sub: newUser.id,
+            role: newUser.role
         })
         return ({user: newUser, accessToken});
     }
@@ -56,7 +60,8 @@ export class UserService {
             throw new BadRequestException("The password is incorecct")
 
         const accessToken = await this.jwtService.signAsync({
-            sub: user.id
+            sub: user.id,
+            role: user.role
         });
 
         return ({accessToken, user});
