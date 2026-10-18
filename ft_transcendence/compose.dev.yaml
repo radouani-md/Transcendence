@@ -37,6 +37,29 @@ services:
     depends_on:
         - postgres
 
+  social-service:
+    build: 
+      context: ./services/social-service
+    
+    container_name: touchline-social
+
+    restart: unless-stopped
+
+    env_file:
+      - .env
+    
+    environment:
+      DATABASE_URL: ${SOCIAL_DATABASE_URL}
+    
+    ports:
+      - "127.0.0.1:3002:3000"
+
+    networks:
+      - backend
+
+    depends_on:
+      - postgres
+
 
 
 

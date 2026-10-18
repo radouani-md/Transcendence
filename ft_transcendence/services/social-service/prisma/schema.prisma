@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Club {
+  id          Int       @id @default(autoincrement())
+  title       String    @db.VarChar(30)
+  description String?
+  logoUrl  String?
+  coverUrl String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  posts    Post[]
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  clubId    Int
+  // One-to-many relation between art and commt
+  club   Club @relation(fields: [clubId], references: [id])
+  
+  @@index([clubId, createdAt])
+
+  reactions Reaction[]
+  comments Comment[]
+}
+
+model Reaction {
+  id Int @id @default(autoincrement())
+  userId  Int
+  postId   Int
+  createdAt DateTime @default(now())
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, postId])
+  @@index([postId])
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  userId    Int
+  postId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+    @@index([postId, createdAt])
+}
