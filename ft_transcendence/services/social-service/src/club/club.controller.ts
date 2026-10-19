@@ -1,8 +1,8 @@
 import { Body, Controller, ForbiddenException, Post, Req, UseGuards } from "@nestjs/common";
 import { ClubService } from "./club.service.js";
 import { ClubDto } from "./dtos/club.dto.js";
-import type { AuthRequest } from "./guards/auth.guard.js";
-import { JwtAuthGuard } from "./guards/auth.guard.js";
+import type { AuthRequest } from "../guards/auth.guard.js";
+import { JwtAuthGuard } from "../guards/auth.guard.js";
 
 
 @Controller('api/club')

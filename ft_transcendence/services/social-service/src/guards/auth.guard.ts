@@ -24,8 +24,7 @@ export class JwtAuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<AuthRequest>();
 
-    const [type, token] =
-      request.headers.authorization?.split(' ') ?? [];
+    const [type, token] = request.headers.authorization?.split(' ') ?? [];
 
     if (type !== 'Bearer' || !token) {
       throw new UnauthorizedException('Token missing');

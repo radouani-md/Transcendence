@@ -6,7 +6,7 @@ import { ClubService } from "./club.service.js";
 import { JwtModule } from "@nestjs/jwt";
 
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { JwtAuthGuard } from "./guards/auth.guard.js";
+import { JwtAuthGuard } from "../guards/auth.guard.js";
 
 
 @Module({
