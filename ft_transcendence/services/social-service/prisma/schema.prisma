@@ -13,15 +13,15 @@ datasource db {
 }
 
 model Club {
-  id          Int       @id @default(autoincrement())
-  userId      Int @unique
-  title       String    @db.VarChar(30) //replace with name
+  id          Int      @id @default(autoincrement())
+  userId      Int      @unique
+  title       String   @unique @db.VarChar(30) //replace with name
   description String?
-  logoUrl  String?
-  coverUrl String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  posts    Post[]
+  logoUrl     String?
+  coverUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  posts       Post[]
 }
 
 model Post {
@@ -31,22 +31,22 @@ model Post {
   updatedAt DateTime @updatedAt
   clubId    Int
   // One-to-many relation between art and commt
-  club   Club @relation(fields: [clubId], references: [id])
-  
-  @@index([clubId, createdAt])
+  club      Club     @relation(fields: [clubId], references: [id])
 
   reactions Reaction[]
-  comments Comment[]
+  comments  Comment[]
+
+  @@index([clubId, createdAt])
 }
 
 model Reaction {
-  id Int @id @default(autoincrement())
-  userId  Int
-  postId   Int
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  postId    Int
   createdAt DateTime @default(now())
 
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
-  
+
   @@unique([userId, postId])
   @@index([postId])
 }
@@ -61,5 +61,5 @@ model Comment {
 
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
-    @@index([postId, createdAt])
+  @@index([postId, createdAt])
 }

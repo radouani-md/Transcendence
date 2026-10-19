@@ -262,17 +262,17 @@ export type ClubOrderByWithRelationInput = {
 export type ClubWhereUniqueInput = Prisma.AtLeast<{
   id?: number
   userId?: number
+  title?: string
   AND?: Prisma.ClubWhereInput | Prisma.ClubWhereInput[]
   OR?: Prisma.ClubWhereInput[]
   NOT?: Prisma.ClubWhereInput | Prisma.ClubWhereInput[]
-  title?: Prisma.StringFilter<"Club"> | string
   description?: Prisma.StringNullableFilter<"Club"> | string | null
   logoUrl?: Prisma.StringNullableFilter<"Club"> | string | null
   coverUrl?: Prisma.StringNullableFilter<"Club"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Club"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Club"> | Date | string
   posts?: Prisma.PostListRelationFilter
-}, "id" | "userId">
+}, "id" | "userId" | "title">
 
 export type ClubOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

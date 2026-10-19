@@ -1,6 +1,7 @@
 -- CreateTable
 CREATE TABLE "Club" (
     "id" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
     "title" VARCHAR(30) NOT NULL,
     "description" TEXT,
     "logoUrl" TEXT,
@@ -43,6 +44,12 @@ CREATE TABLE "Comment" (
 
     CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Club_userId_key" ON "Club"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Club_title_key" ON "Club"("title");
 
 -- CreateIndex
 CREATE INDEX "Post_clubId_createdAt_idx" ON "Post"("clubId", "createdAt");
