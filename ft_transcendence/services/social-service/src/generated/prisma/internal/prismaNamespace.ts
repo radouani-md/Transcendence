@@ -399,6 +399,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   Club: 'Club',
   Post: 'Post',
+  PostMedia: 'PostMedia',
   Reaction: 'Reaction',
   Comment: 'Comment'
 } as const
@@ -416,7 +417,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "club" | "post" | "reaction" | "comment"
+    modelProps: "club" | "post" | "postMedia" | "reaction" | "comment"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -565,6 +566,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.PostCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.PostCountAggregateOutputType> | number
+        }
+      }
+    }
+    PostMedia: {
+      payload: Prisma.$PostMediaPayload<ExtArgs>
+      fields: Prisma.PostMediaFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PostMediaFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostMediaPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PostMediaFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostMediaPayload>
+        }
+        findFirst: {
+          args: Prisma.PostMediaFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostMediaPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PostMediaFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostMediaPayload>
+        }
+        findMany: {
+          args: Prisma.PostMediaFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostMediaPayload>[]
+        }
+        create: {
+          args: Prisma.PostMediaCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostMediaPayload>
+        }
+        createMany: {
+          args: Prisma.PostMediaCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PostMediaCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostMediaPayload>[]
+        }
+        delete: {
+          args: Prisma.PostMediaDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostMediaPayload>
+        }
+        update: {
+          args: Prisma.PostMediaUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostMediaPayload>
+        }
+        deleteMany: {
+          args: Prisma.PostMediaDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PostMediaUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PostMediaUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostMediaPayload>[]
+        }
+        upsert: {
+          args: Prisma.PostMediaUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PostMediaPayload>
+        }
+        aggregate: {
+          args: Prisma.PostMediaAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePostMedia>
+        }
+        groupBy: {
+          args: Prisma.PostMediaGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PostMediaGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PostMediaCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PostMediaCountAggregateOutputType> | number
         }
       }
     }
@@ -780,6 +855,16 @@ export const PostScalarFieldEnum = {
 export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
 
 
+export const PostMediaScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  type: 'type',
+  postId: 'postId'
+} as const
+
+export type PostMediaScalarFieldEnum = (typeof PostMediaScalarFieldEnum)[keyof typeof PostMediaScalarFieldEnum]
+
+
 export const ReactionScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -871,6 +956,20 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'MediaType'
+ */
+export type EnumMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MediaType'>
+    
+
+
+/**
+ * Reference to a field of type 'MediaType[]'
+ */
+export type ListEnumMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MediaType[]'>
     
 
 
@@ -1040,6 +1139,7 @@ export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaC
 export type GlobalOmitConfig = {
   club?: Prisma.ClubOmit
   post?: Prisma.PostOmit
+  postMedia?: Prisma.PostMediaOmit
   reaction?: Prisma.ReactionOmit
   comment?: Prisma.CommentOmit
 }

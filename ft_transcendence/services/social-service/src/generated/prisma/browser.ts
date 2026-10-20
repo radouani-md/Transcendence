@@ -28,6 +28,11 @@ export type Club = Prisma.ClubModel
  */
 export type Post = Prisma.PostModel
 /**
+ * Model PostMedia
+ * 
+ */
+export type PostMedia = Prisma.PostMediaModel
+/**
  * Model Reaction
  * 
  */

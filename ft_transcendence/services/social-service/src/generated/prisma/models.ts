@@ -10,6 +10,7 @@
  */
 export type * from './models/Club.js'
 export type * from './models/Post.js'
+export type * from './models/PostMedia.js'
 export type * from './models/Reaction.js'
 export type * from './models/Comment.js'
 export type * from './commonInputTypes.js'

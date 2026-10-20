@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Club: 'Club',
   Post: 'Post',
+  PostMedia: 'PostMedia',
   Reaction: 'Reaction',
   Comment: 'Comment'
 } as const
@@ -96,6 +97,16 @@ export const PostScalarFieldEnum = {
 } as const
 
 export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
+
+
+export const PostMediaScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  type: 'type',
+  postId: 'postId'
+} as const
+
+export type PostMediaScalarFieldEnum = (typeof PostMediaScalarFieldEnum)[keyof typeof PostMediaScalarFieldEnum]
 
 
 export const ReactionScalarFieldEnum = {

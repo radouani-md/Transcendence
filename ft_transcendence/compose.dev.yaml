@@ -57,6 +57,8 @@ services:
 
     networks:
       - backend
+    volumes:
+      - ./services/social-service/images:/app/images
 
     depends_on:
       - postgres

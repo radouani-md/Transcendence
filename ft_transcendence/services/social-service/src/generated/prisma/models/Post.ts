@@ -221,6 +221,7 @@ export type PostWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Post"> | Date | string
   clubId?: Prisma.IntFilter<"Post"> | number
   club?: Prisma.XOR<Prisma.ClubScalarRelationFilter, Prisma.ClubWhereInput>
+  images?: Prisma.PostMediaListRelationFilter
   reactions?: Prisma.ReactionListRelationFilter
   comments?: Prisma.CommentListRelationFilter
 }
@@ -232,6 +233,7 @@ export type PostOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   clubId?: Prisma.SortOrder
   club?: Prisma.ClubOrderByWithRelationInput
+  images?: Prisma.PostMediaOrderByRelationAggregateInput
   reactions?: Prisma.ReactionOrderByRelationAggregateInput
   comments?: Prisma.CommentOrderByRelationAggregateInput
 }
@@ -246,6 +248,7 @@ export type PostWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Post"> | Date | string
   clubId?: Prisma.IntFilter<"Post"> | number
   club?: Prisma.XOR<Prisma.ClubScalarRelationFilter, Prisma.ClubWhereInput>
+  images?: Prisma.PostMediaListRelationFilter
   reactions?: Prisma.ReactionListRelationFilter
   comments?: Prisma.CommentListRelationFilter
 }, "id">
@@ -279,6 +282,7 @@ export type PostCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   club: Prisma.ClubCreateNestedOneWithoutPostsInput
+  images?: Prisma.PostMediaCreateNestedManyWithoutPostInput
   reactions?: Prisma.ReactionCreateNestedManyWithoutPostInput
   comments?: Prisma.CommentCreateNestedManyWithoutPostInput
 }
@@ -289,6 +293,7 @@ export type PostUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   clubId: number
+  images?: Prisma.PostMediaUncheckedCreateNestedManyWithoutPostInput
   reactions?: Prisma.ReactionUncheckedCreateNestedManyWithoutPostInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutPostInput
 }
@@ -298,6 +303,7 @@ export type PostUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   club?: Prisma.ClubUpdateOneRequiredWithoutPostsNestedInput
+  images?: Prisma.PostMediaUpdateManyWithoutPostNestedInput
   reactions?: Prisma.ReactionUpdateManyWithoutPostNestedInput
   comments?: Prisma.CommentUpdateManyWithoutPostNestedInput
 }
@@ -308,6 +314,7 @@ export type PostUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clubId?: Prisma.IntFieldUpdateOperationsInput | number
+  images?: Prisma.PostMediaUncheckedUpdateManyWithoutPostNestedInput
   reactions?: Prisma.ReactionUncheckedUpdateManyWithoutPostNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutPostNestedInput
 }
@@ -425,6 +432,20 @@ export type PostUncheckedUpdateManyWithoutClubNestedInput = {
   deleteMany?: Prisma.PostScalarWhereInput | Prisma.PostScalarWhereInput[]
 }
 
+export type PostCreateNestedOneWithoutImagesInput = {
+  create?: Prisma.XOR<Prisma.PostCreateWithoutImagesInput, Prisma.PostUncheckedCreateWithoutImagesInput>
+  connectOrCreate?: Prisma.PostCreateOrConnectWithoutImagesInput
+  connect?: Prisma.PostWhereUniqueInput
+}
+
+export type PostUpdateOneRequiredWithoutImagesNestedInput = {
+  create?: Prisma.XOR<Prisma.PostCreateWithoutImagesInput, Prisma.PostUncheckedCreateWithoutImagesInput>
+  connectOrCreate?: Prisma.PostCreateOrConnectWithoutImagesInput
+  upsert?: Prisma.PostUpsertWithoutImagesInput
+  connect?: Prisma.PostWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PostUpdateToOneWithWhereWithoutImagesInput, Prisma.PostUpdateWithoutImagesInput>, Prisma.PostUncheckedUpdateWithoutImagesInput>
+}
+
 export type PostCreateNestedOneWithoutReactionsInput = {
   create?: Prisma.XOR<Prisma.PostCreateWithoutReactionsInput, Prisma.PostUncheckedCreateWithoutReactionsInput>
   connectOrCreate?: Prisma.PostCreateOrConnectWithoutReactionsInput
@@ -457,6 +478,7 @@ export type PostCreateWithoutClubInput = {
   content: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  images?: Prisma.PostMediaCreateNestedManyWithoutPostInput
   reactions?: Prisma.ReactionCreateNestedManyWithoutPostInput
   comments?: Prisma.CommentCreateNestedManyWithoutPostInput
 }
@@ -466,6 +488,7 @@ export type PostUncheckedCreateWithoutClubInput = {
   content: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  images?: Prisma.PostMediaUncheckedCreateNestedManyWithoutPostInput
   reactions?: Prisma.ReactionUncheckedCreateNestedManyWithoutPostInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutPostInput
 }
@@ -507,11 +530,66 @@ export type PostScalarWhereInput = {
   clubId?: Prisma.IntFilter<"Post"> | number
 }
 
+export type PostCreateWithoutImagesInput = {
+  content: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  club: Prisma.ClubCreateNestedOneWithoutPostsInput
+  reactions?: Prisma.ReactionCreateNestedManyWithoutPostInput
+  comments?: Prisma.CommentCreateNestedManyWithoutPostInput
+}
+
+export type PostUncheckedCreateWithoutImagesInput = {
+  id?: number
+  content: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clubId: number
+  reactions?: Prisma.ReactionUncheckedCreateNestedManyWithoutPostInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutPostInput
+}
+
+export type PostCreateOrConnectWithoutImagesInput = {
+  where: Prisma.PostWhereUniqueInput
+  create: Prisma.XOR<Prisma.PostCreateWithoutImagesInput, Prisma.PostUncheckedCreateWithoutImagesInput>
+}
+
+export type PostUpsertWithoutImagesInput = {
+  update: Prisma.XOR<Prisma.PostUpdateWithoutImagesInput, Prisma.PostUncheckedUpdateWithoutImagesInput>
+  create: Prisma.XOR<Prisma.PostCreateWithoutImagesInput, Prisma.PostUncheckedCreateWithoutImagesInput>
+  where?: Prisma.PostWhereInput
+}
+
+export type PostUpdateToOneWithWhereWithoutImagesInput = {
+  where?: Prisma.PostWhereInput
+  data: Prisma.XOR<Prisma.PostUpdateWithoutImagesInput, Prisma.PostUncheckedUpdateWithoutImagesInput>
+}
+
+export type PostUpdateWithoutImagesInput = {
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  club?: Prisma.ClubUpdateOneRequiredWithoutPostsNestedInput
+  reactions?: Prisma.ReactionUpdateManyWithoutPostNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutPostNestedInput
+}
+
+export type PostUncheckedUpdateWithoutImagesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clubId?: Prisma.IntFieldUpdateOperationsInput | number
+  reactions?: Prisma.ReactionUncheckedUpdateManyWithoutPostNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutPostNestedInput
+}
+
 export type PostCreateWithoutReactionsInput = {
   content: string
   createdAt?: Date | string
   updatedAt?: Date | string
   club: Prisma.ClubCreateNestedOneWithoutPostsInput
+  images?: Prisma.PostMediaCreateNestedManyWithoutPostInput
   comments?: Prisma.CommentCreateNestedManyWithoutPostInput
 }
 
@@ -521,6 +599,7 @@ export type PostUncheckedCreateWithoutReactionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   clubId: number
+  images?: Prisma.PostMediaUncheckedCreateNestedManyWithoutPostInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutPostInput
 }
 
@@ -545,6 +624,7 @@ export type PostUpdateWithoutReactionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   club?: Prisma.ClubUpdateOneRequiredWithoutPostsNestedInput
+  images?: Prisma.PostMediaUpdateManyWithoutPostNestedInput
   comments?: Prisma.CommentUpdateManyWithoutPostNestedInput
 }
 
@@ -554,6 +634,7 @@ export type PostUncheckedUpdateWithoutReactionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clubId?: Prisma.IntFieldUpdateOperationsInput | number
+  images?: Prisma.PostMediaUncheckedUpdateManyWithoutPostNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutPostNestedInput
 }
 
@@ -562,6 +643,7 @@ export type PostCreateWithoutCommentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   club: Prisma.ClubCreateNestedOneWithoutPostsInput
+  images?: Prisma.PostMediaCreateNestedManyWithoutPostInput
   reactions?: Prisma.ReactionCreateNestedManyWithoutPostInput
 }
 
@@ -571,6 +653,7 @@ export type PostUncheckedCreateWithoutCommentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   clubId: number
+  images?: Prisma.PostMediaUncheckedCreateNestedManyWithoutPostInput
   reactions?: Prisma.ReactionUncheckedCreateNestedManyWithoutPostInput
 }
 
@@ -595,6 +678,7 @@ export type PostUpdateWithoutCommentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   club?: Prisma.ClubUpdateOneRequiredWithoutPostsNestedInput
+  images?: Prisma.PostMediaUpdateManyWithoutPostNestedInput
   reactions?: Prisma.ReactionUpdateManyWithoutPostNestedInput
 }
 
@@ -604,6 +688,7 @@ export type PostUncheckedUpdateWithoutCommentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clubId?: Prisma.IntFieldUpdateOperationsInput | number
+  images?: Prisma.PostMediaUncheckedUpdateManyWithoutPostNestedInput
   reactions?: Prisma.ReactionUncheckedUpdateManyWithoutPostNestedInput
 }
 
@@ -618,6 +703,7 @@ export type PostUpdateWithoutClubInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  images?: Prisma.PostMediaUpdateManyWithoutPostNestedInput
   reactions?: Prisma.ReactionUpdateManyWithoutPostNestedInput
   comments?: Prisma.CommentUpdateManyWithoutPostNestedInput
 }
@@ -627,6 +713,7 @@ export type PostUncheckedUpdateWithoutClubInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  images?: Prisma.PostMediaUncheckedUpdateManyWithoutPostNestedInput
   reactions?: Prisma.ReactionUncheckedUpdateManyWithoutPostNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutPostNestedInput
 }
@@ -644,11 +731,13 @@ export type PostUncheckedUpdateManyWithoutClubInput = {
  */
 
 export type PostCountOutputType = {
+  images: number
   reactions: number
   comments: number
 }
 
 export type PostCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  images?: boolean | PostCountOutputTypeCountImagesArgs
   reactions?: boolean | PostCountOutputTypeCountReactionsArgs
   comments?: boolean | PostCountOutputTypeCountCommentsArgs
 }
@@ -661,6 +750,13 @@ export type PostCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
    * Select specific fields to fetch from the PostCountOutputType
    */
   select?: Prisma.PostCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * PostCountOutputType without action
+ */
+export type PostCountOutputTypeCountImagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PostMediaWhereInput
 }
 
 /**
@@ -685,6 +781,7 @@ export type PostSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   clubId?: boolean
   club?: boolean | Prisma.ClubDefaultArgs<ExtArgs>
+  images?: boolean | Prisma.Post$imagesArgs<ExtArgs>
   reactions?: boolean | Prisma.Post$reactionsArgs<ExtArgs>
   comments?: boolean | Prisma.Post$commentsArgs<ExtArgs>
   _count?: boolean | Prisma.PostCountOutputTypeDefaultArgs<ExtArgs>
@@ -719,6 +816,7 @@ export type PostSelectScalar = {
 export type PostOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "content" | "createdAt" | "updatedAt" | "clubId", ExtArgs["result"]["post"]>
 export type PostInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   club?: boolean | Prisma.ClubDefaultArgs<ExtArgs>
+  images?: boolean | Prisma.Post$imagesArgs<ExtArgs>
   reactions?: boolean | Prisma.Post$reactionsArgs<ExtArgs>
   comments?: boolean | Prisma.Post$commentsArgs<ExtArgs>
   _count?: boolean | Prisma.PostCountOutputTypeDefaultArgs<ExtArgs>
@@ -734,6 +832,7 @@ export type $PostPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "Post"
   objects: {
     club: Prisma.$ClubPayload<ExtArgs>
+    images: Prisma.$PostMediaPayload<ExtArgs>[]
     reactions: Prisma.$ReactionPayload<ExtArgs>[]
     comments: Prisma.$CommentPayload<ExtArgs>[]
   }
@@ -1138,6 +1237,7 @@ readonly fields: PostFieldRefs;
 export interface Prisma__PostClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   club<T extends Prisma.ClubDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ClubDefaultArgs<ExtArgs>>): Prisma.Prisma__ClubClient<runtime.Types.Result.GetResult<Prisma.$ClubPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  images<T extends Prisma.Post$imagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Post$imagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostMediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reactions<T extends Prisma.Post$reactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Post$reactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   comments<T extends Prisma.Post$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Post$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1572,6 +1672,30 @@ export type PostDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Posts to delete.
    */
   limit?: number
+}
+
+/**
+ * Post.images
+ */
+export type Post$imagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PostMedia
+   */
+  select?: Prisma.PostMediaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PostMedia
+   */
+  omit?: Prisma.PostMediaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PostMediaInclude<ExtArgs> | null
+  where?: Prisma.PostMediaWhereInput
+  orderBy?: Prisma.PostMediaOrderByWithRelationInput | Prisma.PostMediaOrderByWithRelationInput[]
+  cursor?: Prisma.PostMediaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PostMediaScalarFieldEnum | Prisma.PostMediaScalarFieldEnum[]
 }
 
 /**
