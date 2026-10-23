@@ -22,6 +22,9 @@ services:
   
     container_name: touchline-auth
 
+    env_file:
+      - .env
+      
     environment:
       DATABASE_URL: ${AUTH_DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}

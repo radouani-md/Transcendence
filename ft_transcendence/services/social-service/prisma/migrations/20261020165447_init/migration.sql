@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "MediaType" AS ENUM ('IMAGE', 'VIDEO');
+
 -- CreateTable
 CREATE TABLE "Club" (
     "id" SERIAL NOT NULL,
@@ -21,6 +24,16 @@ CREATE TABLE "Post" (
     "clubId" INTEGER NOT NULL,
 
     CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "PostMedia" (
+    "id" SERIAL NOT NULL,
+    "url" TEXT NOT NULL,
+    "type" "MediaType" NOT NULL,
+    "postId" INTEGER NOT NULL,
+
+    CONSTRAINT "PostMedia_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -55,6 +68,9 @@ CREATE UNIQUE INDEX "Club_title_key" ON "Club"("title");
 CREATE INDEX "Post_clubId_createdAt_idx" ON "Post"("clubId", "createdAt");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "PostMedia_postId_key" ON "PostMedia"("postId");
+
+-- CreateIndex
 CREATE INDEX "Reaction_postId_idx" ON "Reaction"("postId");
 
 -- CreateIndex
@@ -65,6 +81,9 @@ CREATE INDEX "Comment_postId_createdAt_idx" ON "Comment"("postId", "createdAt");
 
 -- AddForeignKey
 ALTER TABLE "Post" ADD CONSTRAINT "Post_clubId_fkey" FOREIGN KEY ("clubId") REFERENCES "Club"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PostMedia" ADD CONSTRAINT "PostMedia_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Reaction" ADD CONSTRAINT "Reaction_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
