@@ -38,7 +38,7 @@ model Post {
   // One-to-many relation between art and commt
   club      Club     @relation(fields: [clubId], references: [id])
 
-  images    PostMedia[]
+  images    PostMedia[] // replace it to media
   reactions Reaction[]
   comments  Comment[]
 
@@ -77,4 +77,5 @@ model Comment {
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@index([postId, createdAt])
+  
 }

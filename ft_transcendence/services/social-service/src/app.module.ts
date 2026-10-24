@@ -4,6 +4,7 @@ import { PrismaModule } from './prisma/prisma.module.js';
 import { ConfigModule } from '@nestjs/config';
 import { ClubModule } from './club/club.module.js';
 import { UploadsModule } from './uploads/uploads.module.js';
+import { PostModule } from './post/post.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -11,8 +12,8 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     ClubModule,
-    UploadsModule,
-    PrismaModule
+    PrismaModule,
+    PostModule
   ]
 })
 export class AppModule {}

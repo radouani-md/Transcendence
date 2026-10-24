@@ -20,7 +20,7 @@ export class ClubService {
         })
         if (clubName)
             throw new ConflictException('Club name already exist');
-        if (club)
+        if (!club)
             throw new ConflictException('Club already exists');
         
         const newClub = await this.prisma.club.create({

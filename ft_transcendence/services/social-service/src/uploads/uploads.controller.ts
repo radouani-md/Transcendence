@@ -23,6 +23,10 @@ export  class UploadsController {
             }else {
                 cb(new BadRequestException('Unsupported file format'), false);
             }
+        },
+        limits: {
+            fileSize: 50 * 1024 * 1024,
+            files: 1
         }
     }))
     public  uploadFile(@UploadedFile() file: Express.Multer.File) {
