@@ -1,5 +1,4 @@
-import { IsEnum, IsNotEmpty, IsString, MaxLength } from "class-validator";
-import { MediaType } from "../../generated/prisma/enums.js";
+import { IsNotEmpty, IsOptional, IsString, MaxLength } from "class-validator";
 
 
 export class PostDto {
@@ -8,4 +7,13 @@ export class PostDto {
     @IsNotEmpty()
     @IsString()
     content: string;
+}
+
+export class UpdatePostDto {
+    
+    @MaxLength(250)
+    @IsNotEmpty()
+    @IsOptional()
+    @IsString()
+    content?: string;
 }
