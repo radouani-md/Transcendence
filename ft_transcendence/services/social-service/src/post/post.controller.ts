@@ -9,12 +9,12 @@ import { join } from "node:path";
 import { unlinkSync } from "node:fs";
 
 
-@Controller('api/club')
+@Controller()
 export class PostController {
 
     constructor(private readonly postService: PostService) {}
 
-    @Post('post')
+    @Post('api/club/post')
     @UseInterceptors(FileInterceptor('file', {
         storage: diskStorage({
             destination: './images',
@@ -47,7 +47,7 @@ export class PostController {
         return (this.postService.sharePost(body, payload.sub, file));
     }
 
-    @Patch('post/:id')
+    @Patch('api/club/post/:id')
     @UseInterceptors(FileInterceptor('file', {
         storage: diskStorage({
             destination: './images',
@@ -94,7 +94,7 @@ export class PostController {
         }
     }
 
-    @Delete('post/:id')
+    @Delete('api/club/post/:id')
     @UseGuards(JwtAuthGuard)
     public deletePost(@Param('id', ParseIntPipe) postId: number, @Req() request: AuthRequest){
         const payload = request.user;
@@ -103,15 +103,14 @@ export class PostController {
         return (this.postService.deletePost(postId, payload.sub))
     }
 
-    @Get('post/:id')
+    @Get('api/post/:id')
     public getPost(@Param('id', ParseIntPipe) postId: number){
 
         return (this.postService.getPost(postId));
     }
 
-    @Get('post/')
+    @Get('api/post')
     public getAllPosts(){
-
         return (this.postService.getAllPosts());
     }
 
