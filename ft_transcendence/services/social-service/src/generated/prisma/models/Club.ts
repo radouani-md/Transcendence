@@ -39,7 +39,7 @@ export type ClubSumAggregateOutputType = {
 export type ClubMinAggregateOutputType = {
   id: number | null
   userId: number | null
-  title: string | null
+  name: string | null
   description: string | null
   logoUrl: string | null
   coverUrl: string | null
@@ -50,7 +50,7 @@ export type ClubMinAggregateOutputType = {
 export type ClubMaxAggregateOutputType = {
   id: number | null
   userId: number | null
-  title: string | null
+  name: string | null
   description: string | null
   logoUrl: string | null
   coverUrl: string | null
@@ -61,7 +61,7 @@ export type ClubMaxAggregateOutputType = {
 export type ClubCountAggregateOutputType = {
   id: number
   userId: number
-  title: number
+  name: number
   description: number
   logoUrl: number
   coverUrl: number
@@ -84,7 +84,7 @@ export type ClubSumAggregateInputType = {
 export type ClubMinAggregateInputType = {
   id?: true
   userId?: true
-  title?: true
+  name?: true
   description?: true
   logoUrl?: true
   coverUrl?: true
@@ -95,7 +95,7 @@ export type ClubMinAggregateInputType = {
 export type ClubMaxAggregateInputType = {
   id?: true
   userId?: true
-  title?: true
+  name?: true
   description?: true
   logoUrl?: true
   coverUrl?: true
@@ -106,7 +106,7 @@ export type ClubMaxAggregateInputType = {
 export type ClubCountAggregateInputType = {
   id?: true
   userId?: true
-  title?: true
+  name?: true
   description?: true
   logoUrl?: true
   coverUrl?: true
@@ -204,7 +204,7 @@ export type ClubGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type ClubGroupByOutputType = {
   id: number
   userId: number
-  title: string
+  name: string
   description: string | null
   logoUrl: string | null
   coverUrl: string | null
@@ -238,7 +238,7 @@ export type ClubWhereInput = {
   NOT?: Prisma.ClubWhereInput | Prisma.ClubWhereInput[]
   id?: Prisma.IntFilter<"Club"> | number
   userId?: Prisma.IntFilter<"Club"> | number
-  title?: Prisma.StringFilter<"Club"> | string
+  name?: Prisma.StringFilter<"Club"> | string
   description?: Prisma.StringNullableFilter<"Club"> | string | null
   logoUrl?: Prisma.StringNullableFilter<"Club"> | string | null
   coverUrl?: Prisma.StringNullableFilter<"Club"> | string | null
@@ -250,7 +250,7 @@ export type ClubWhereInput = {
 export type ClubOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  title?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   coverUrl?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -262,7 +262,7 @@ export type ClubOrderByWithRelationInput = {
 export type ClubWhereUniqueInput = Prisma.AtLeast<{
   id?: number
   userId?: number
-  title?: string
+  name?: string
   AND?: Prisma.ClubWhereInput | Prisma.ClubWhereInput[]
   OR?: Prisma.ClubWhereInput[]
   NOT?: Prisma.ClubWhereInput | Prisma.ClubWhereInput[]
@@ -272,12 +272,12 @@ export type ClubWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Club"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Club"> | Date | string
   posts?: Prisma.PostListRelationFilter
-}, "id" | "userId" | "title">
+}, "id" | "userId" | "name">
 
 export type ClubOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  title?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   coverUrl?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -296,7 +296,7 @@ export type ClubScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ClubScalarWhereWithAggregatesInput | Prisma.ClubScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Club"> | number
   userId?: Prisma.IntWithAggregatesFilter<"Club"> | number
-  title?: Prisma.StringWithAggregatesFilter<"Club"> | string
+  name?: Prisma.StringWithAggregatesFilter<"Club"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Club"> | string | null
   logoUrl?: Prisma.StringNullableWithAggregatesFilter<"Club"> | string | null
   coverUrl?: Prisma.StringNullableWithAggregatesFilter<"Club"> | string | null
@@ -306,7 +306,7 @@ export type ClubScalarWhereWithAggregatesInput = {
 
 export type ClubCreateInput = {
   userId: number
-  title: string
+  name: string
   description?: string | null
   logoUrl?: string | null
   coverUrl?: string | null
@@ -318,7 +318,7 @@ export type ClubCreateInput = {
 export type ClubUncheckedCreateInput = {
   id?: number
   userId: number
-  title: string
+  name: string
   description?: string | null
   logoUrl?: string | null
   coverUrl?: string | null
@@ -329,7 +329,7 @@ export type ClubUncheckedCreateInput = {
 
 export type ClubUpdateInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number
-  title?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -341,7 +341,7 @@ export type ClubUpdateInput = {
 export type ClubUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
-  title?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -353,7 +353,7 @@ export type ClubUncheckedUpdateInput = {
 export type ClubCreateManyInput = {
   id?: number
   userId: number
-  title: string
+  name: string
   description?: string | null
   logoUrl?: string | null
   coverUrl?: string | null
@@ -363,7 +363,7 @@ export type ClubCreateManyInput = {
 
 export type ClubUpdateManyMutationInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number
-  title?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -374,7 +374,7 @@ export type ClubUpdateManyMutationInput = {
 export type ClubUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
-  title?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -385,7 +385,7 @@ export type ClubUncheckedUpdateManyInput = {
 export type ClubCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  title?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
   coverUrl?: Prisma.SortOrder
@@ -401,7 +401,7 @@ export type ClubAvgOrderByAggregateInput = {
 export type ClubMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  title?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
   coverUrl?: Prisma.SortOrder
@@ -412,7 +412,7 @@ export type ClubMaxOrderByAggregateInput = {
 export type ClubMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  title?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
   coverUrl?: Prisma.SortOrder
@@ -466,7 +466,7 @@ export type ClubUpdateOneRequiredWithoutPostsNestedInput = {
 
 export type ClubCreateWithoutPostsInput = {
   userId: number
-  title: string
+  name: string
   description?: string | null
   logoUrl?: string | null
   coverUrl?: string | null
@@ -477,7 +477,7 @@ export type ClubCreateWithoutPostsInput = {
 export type ClubUncheckedCreateWithoutPostsInput = {
   id?: number
   userId: number
-  title: string
+  name: string
   description?: string | null
   logoUrl?: string | null
   coverUrl?: string | null
@@ -503,7 +503,7 @@ export type ClubUpdateToOneWithWhereWithoutPostsInput = {
 
 export type ClubUpdateWithoutPostsInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number
-  title?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -514,7 +514,7 @@ export type ClubUpdateWithoutPostsInput = {
 export type ClubUncheckedUpdateWithoutPostsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
-  title?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -556,7 +556,7 @@ export type ClubCountOutputTypeCountPostsArgs<ExtArgs extends runtime.Types.Exte
 export type ClubSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  title?: boolean
+  name?: boolean
   description?: boolean
   logoUrl?: boolean
   coverUrl?: boolean
@@ -569,7 +569,7 @@ export type ClubSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 export type ClubSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  title?: boolean
+  name?: boolean
   description?: boolean
   logoUrl?: boolean
   coverUrl?: boolean
@@ -580,7 +580,7 @@ export type ClubSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 export type ClubSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  title?: boolean
+  name?: boolean
   description?: boolean
   logoUrl?: boolean
   coverUrl?: boolean
@@ -591,7 +591,7 @@ export type ClubSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 export type ClubSelectScalar = {
   id?: boolean
   userId?: boolean
-  title?: boolean
+  name?: boolean
   description?: boolean
   logoUrl?: boolean
   coverUrl?: boolean
@@ -599,7 +599,7 @@ export type ClubSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ClubOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "title" | "description" | "logoUrl" | "coverUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["club"]>
+export type ClubOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "description" | "logoUrl" | "coverUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["club"]>
 export type ClubInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   posts?: boolean | Prisma.Club$postsArgs<ExtArgs>
   _count?: boolean | Prisma.ClubCountOutputTypeDefaultArgs<ExtArgs>
@@ -615,7 +615,7 @@ export type $ClubPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     userId: number
-    title: string
+    name: string
     description: string | null
     logoUrl: string | null
     coverUrl: string | null
@@ -1047,7 +1047,7 @@ export interface Prisma__ClubClient<T, Null = never, ExtArgs extends runtime.Typ
 export interface ClubFieldRefs {
   readonly id: Prisma.FieldRef<"Club", 'Int'>
   readonly userId: Prisma.FieldRef<"Club", 'Int'>
-  readonly title: Prisma.FieldRef<"Club", 'String'>
+  readonly name: Prisma.FieldRef<"Club", 'String'>
   readonly description: Prisma.FieldRef<"Club", 'String'>
   readonly logoUrl: Prisma.FieldRef<"Club", 'String'>
   readonly coverUrl: Prisma.FieldRef<"Club", 'String'>

@@ -5,7 +5,7 @@ CREATE TYPE "MediaType" AS ENUM ('IMAGE', 'VIDEO');
 CREATE TABLE "Club" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
-    "title" VARCHAR(30) NOT NULL,
+    "name" VARCHAR(30) NOT NULL,
     "description" TEXT,
     "logoUrl" TEXT,
     "coverUrl" TEXT,
@@ -62,7 +62,7 @@ CREATE TABLE "Comment" (
 CREATE UNIQUE INDEX "Club_userId_key" ON "Club"("userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Club_title_key" ON "Club"("title");
+CREATE UNIQUE INDEX "Club_name_key" ON "Club"("name");
 
 -- CreateIndex
 CREATE INDEX "Post_clubId_createdAt_idx" ON "Post"("clubId", "createdAt");

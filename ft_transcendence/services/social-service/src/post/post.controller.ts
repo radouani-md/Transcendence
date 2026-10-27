@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, ForbiddenException, Param, ParseIntPipe, Patch, Post, Req, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, ForbiddenException, Get, Param, ParseIntPipe, Patch, Post, Req, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import type { AuthRequest } from "../guards/auth.guard.js";
 import { JwtAuthGuard } from "../guards/auth.guard.js";
 import { PostDto, UpdatePostDto } from "./dtos/post.dto.js";
@@ -102,6 +102,19 @@ export class PostController {
         
         return (this.postService.deletePost(postId, payload.sub))
     }
+
+    @Get('post/:id')
+    public getPost(@Param('id', ParseIntPipe) postId: number){
+
+        return (this.postService.getPost(postId));
+    }
+
+    @Get('post/')
+    public getAllPosts(){
+
+        return (this.postService.getAllPosts());
+    }
+
 
 
 

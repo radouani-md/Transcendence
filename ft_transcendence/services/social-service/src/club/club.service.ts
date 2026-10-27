@@ -16,7 +16,7 @@ export class ClubService {
             where: { userId }
         })
         const clubName = await this.prisma.club.findUnique({
-            where : {title: nameTitle}
+            where : {name: nameTitle}
         })
         if (club)
             throw new ConflictException('Club already exist');
@@ -26,7 +26,7 @@ export class ClubService {
         const newClub = await this.prisma.club.create({
             data: {
                 userId: userId,
-                title: nameTitle,
+                name: nameTitle,
                 description,
                 logoUrl, // handel if URL is not good
                 coverUrl
@@ -34,7 +34,7 @@ export class ClubService {
             select: {
                 id: true,
                 userId: true,
-                title: true,
+                name: true,
                 description: true,
                 logoUrl: true,
                 coverUrl: true

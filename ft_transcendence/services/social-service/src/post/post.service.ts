@@ -33,7 +33,7 @@ export class PostService {
             data: {
                 clubId: club.id,
                 content,
-                images: {
+                media: {
                     create: {
                         url:  file.path,
                         type: typeM,
@@ -41,7 +41,7 @@ export class PostService {
                     }
             },
             include: {
-                images: true
+                media: true
             }
         })
         
@@ -61,7 +61,7 @@ export class PostService {
         const post = await this.prisma.post.findUnique({
             where: { id: postId },
             include: {
-                images: true
+                media: true
             }
         })
 
@@ -74,7 +74,7 @@ export class PostService {
         if (content === undefined && !file)
             throw new BadRequestException('Try to Provide text or media (file)');
 
-        const oldMedia = post.images[0].url;
+        const oldMedia = post.media[0].url;
 
         const updatedPost = await this.prisma.post.update({
             where: {
@@ -83,11 +83,11 @@ export class PostService {
             data: {
                 ...(content !== undefined && {content}),
                 ...(file && {
-                    images: post.images[0]
+                    media: post.media[0]
                     ? {
                         update: {
                             where: {
-                                id: post.images[0].id
+                                id: post.media[0].id
                             },
                             data: {
                                 url: file.path,
@@ -104,7 +104,7 @@ export class PostService {
                 })
             },
             include: {
-                images: true
+                media: true
             }
             
         })
@@ -132,7 +132,7 @@ export class PostService {
         const post = await this.prisma.post.findUnique({
             where: { id: postId },
             include: {
-                images: true
+                media: true
             }
         })
 
@@ -147,9 +147,9 @@ export class PostService {
                 id: postId
             }
         })
-        // console.log(`${post.images.length}`)
+        // console.log(`${post.media.length}`)
         try{
-            const imagePath = join(process.cwd(), `./${post.images[0].url}`)
+            const imagePath = join(process.cwd(), `./${post.media[0].url}`)
             unlinkSync(imagePath);
 
         }catch {
@@ -159,6 +159,31 @@ export class PostService {
         return ({ message: "The Post deleted successfully" })
     }
 
+    public async getPost(postId: number){
+        
+        const post = await this.prisma.post.findUnique({
+            where: { id: postId },
+            include: { media: true}
+        }) 
+
+        if (!post)
+            throw new NotFoundException('post Not found');
+
+        return ( {post} );
+    }
+    
+    public async getAllPosts(){
+        
+        const posts = await this.prisma.post.findMany({
+            include: { media: true },
+            orderBy: { createdAt: 'desc' }
+        })
+
+        if (!posts.at(0))
+            throw new NotFoundException('posts Not found');
+
+        return ( { posts } );
+    }
 
 
 }

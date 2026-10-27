@@ -259,7 +259,7 @@ export type PostMediaScalarWhereWithAggregatesInput = {
 export type PostMediaCreateInput = {
   url: string
   type: $Enums.MediaType
-  post: Prisma.PostCreateNestedOneWithoutImagesInput
+  post: Prisma.PostCreateNestedOneWithoutMediaInput
 }
 
 export type PostMediaUncheckedCreateInput = {
@@ -272,7 +272,7 @@ export type PostMediaUncheckedCreateInput = {
 export type PostMediaUpdateInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
-  post?: Prisma.PostUpdateOneRequiredWithoutImagesNestedInput
+  post?: Prisma.PostUpdateOneRequiredWithoutMediaNestedInput
 }
 
 export type PostMediaUncheckedUpdateInput = {

@@ -20,7 +20,7 @@ datasource db {
 model Club {
   id          Int      @id @default(autoincrement())
   userId      Int      @unique
-  title       String   @unique @db.VarChar(30) //replace with name
+  name        String   @unique @db.VarChar(30) //replace with name
   description String?
   logoUrl     String?
   coverUrl    String?
@@ -38,7 +38,7 @@ model Post {
   // One-to-many relation between art and commt
   club      Club     @relation(fields: [clubId], references: [id])
 
-  images    PostMedia[] // replace it to media
+  media    PostMedia[] 
   reactions Reaction[]
   comments  Comment[]
 
