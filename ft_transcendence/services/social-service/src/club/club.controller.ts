@@ -13,6 +13,7 @@ export class ClubController {
     @UseGuards(JwtAuthGuard)
     public clubInfos(@Body() body: ClubDto, @Req() request: AuthRequest){
         const payload = request.user;
+        console.log(request.user);
         if (payload.role !== 'CLUB')
             throw new ForbiddenException('Only club can create profile')
         return (this.clubService.clubInfos(body, payload.sub))

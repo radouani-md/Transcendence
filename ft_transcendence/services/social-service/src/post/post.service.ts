@@ -8,6 +8,7 @@ import { create } from "domain";
 import { unlink } from 'node:fs/promises';
 import { join } from 'node:path';
 import { unlinkSync } from "node:fs";
+import { take } from "rxjs";
 
 @Injectable()
 export class PostService {
@@ -172,17 +173,36 @@ export class PostService {
         return ( {post} );
     }
     
-    public async getAllPosts(){
+    public async getAllPosts(cursor?: number){
         
+        const limit = 3;
+
         const posts = await this.prisma.post.findMany({
-            include: { media: true },
-            orderBy: { createdAt: 'desc' }
+
+            where: {
+                ...(cursor !== undefined && {
+                    id: { lt: cursor }
+                })
+            },
+            take: limit + 1,
+            
+            orderBy: { id: 'desc' },
+            include: { media: true }
         })
 
         if (!posts.at(0))
             throw new NotFoundException('posts Not found');
 
-        return ( { posts } );
+        const hasMorePosts: boolean = posts.length > limit;
+        
+        if (hasMorePosts)
+            posts.pop();
+
+        const nextCursor = hasMorePosts ?
+                            posts[limit - 1]
+                            : null
+
+        return ( { posts, nextCursor, hasMorePosts } );
     }
 
 
