@@ -110,7 +110,7 @@ export class PostController {
     }
 
     @Get('api/post')
-    public getAllPosts(@Query('cursor') cursor?: number){
+    public getAllPosts(@Query('cursor', new ParseIntPipe({ optional: true })) cursor?: number){
         return (this.postService.getAllPosts(cursor));
     }
 

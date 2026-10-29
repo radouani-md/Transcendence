@@ -173,7 +173,7 @@ export class PostService {
         return ( {post} );
     }
     
-    public async getAllPosts(cursor?: number){
+    public async getAllPosts(cursor?: number) {
         
         const limit = 3;
 
@@ -199,10 +199,10 @@ export class PostService {
             posts.pop();
 
         const nextCursor = hasMorePosts ?
-                            posts[limit - 1]
+                            posts[limit - 1].id
                             : null
 
-        return ( { posts, nextCursor, hasMorePosts } );
+        return ( { posts, hasMorePosts, nextCursor } );
     }
 
 
