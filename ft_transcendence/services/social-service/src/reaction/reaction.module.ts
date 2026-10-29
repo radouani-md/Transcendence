@@ -14,4 +14,4 @@ import { JwtModule } from "@nestjs/jwt";
         JwtModule.register({})
     ]
 })
-export class Reaction {}
+export class ReactionModule {}

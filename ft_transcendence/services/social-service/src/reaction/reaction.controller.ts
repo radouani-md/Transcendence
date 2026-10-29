@@ -1,4 +1,4 @@
-import { Controller, Param, ParseIntPipe, Post, Req, UseGuards } from "@nestjs/common";
+import { Controller, Delete, Param, ParseIntPipe, Post, Req, UseGuards } from "@nestjs/common";
 import { ReactionService } from "./reaction.service.js";
 import { JwtAuthGuard } from "../guards/auth.guard.js";
 import type { AuthRequest } from "../guards/auth.guard.js"
@@ -9,10 +9,19 @@ export class ReactionController {
 
     @Post(':id/like')
     @UseGuards(JwtAuthGuard)
-    public likePost(@Req() request: AuthRequest, @Param(ParseIntPipe) postId: number)
+    public likePost(@Req() request: AuthRequest, @Param('id', ParseIntPipe) postId: number)
     {
         const payload = request.user;
 
         return (this.reactionService.likePost(payload.sub, postId))
+    }
+
+    @Delete(':id/like')
+    @UseGuards(JwtAuthGuard)
+    public unlikePost(@Req() request: AuthRequest, @Param('id', ParseIntPipe) postId: number)
+    {
+        const payload = request.user;
+
+        return (this.reactionService.unlikePost(payload.sub, postId))
     }
 }

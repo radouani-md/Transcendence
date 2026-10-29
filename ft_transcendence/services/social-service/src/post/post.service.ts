@@ -164,7 +164,12 @@ export class PostService {
         
         const post = await this.prisma.post.findUnique({
             where: { id: postId },
-            include: { media: true}
+            include: {
+                media: true,
+                _count: {
+                    select: { reactions: true }
+                }
+            }
         }) 
 
         if (!post)
@@ -187,7 +192,12 @@ export class PostService {
             take: limit + 1,
             
             orderBy: { id: 'desc' },
-            include: { media: true }
+            include: {
+                media: true,
+                _count: {
+                    select: { reactions: true }
+                }
+            }
         })
 
         if (!posts.at(0))
