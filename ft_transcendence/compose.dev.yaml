@@ -34,6 +34,10 @@ services:
     ports:
       - "127.0.0.1:3001:3000"
 
+    volumes:
+      - ./services/auth-service:/app
+      - /app/node_modules
+
     networks:
       - backend
 
@@ -61,7 +65,8 @@ services:
     networks:
       - backend
     volumes:
-      - ./services/social-service/images:/app/images
+      - ./services/social-service:/app
+      - /app/node_modules
 
     depends_on:
       - postgres
