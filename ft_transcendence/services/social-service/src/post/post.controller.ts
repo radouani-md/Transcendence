@@ -7,6 +7,7 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
 import { join } from "node:path";
 import { unlinkSync } from "node:fs";
+import { request } from "node:http";
 
 
 @Controller()
@@ -104,14 +105,20 @@ export class PostController {
     }
 
     @Get('api/post/:id')
-    public getPost(@Param('id', ParseIntPipe) postId: number){
-
-        return (this.postService.getPost(postId));
+    @UseGuards(JwtAuthGuard)
+    public getPost(@Param('id', ParseIntPipe) postId: number, @Req() request: AuthRequest){
+        const payload = request.user;
+        return (this.postService.getPost(postId, payload.sub));
     }
 
     @Get('api/post')
-    public getAllPosts(@Query('cursor', new ParseIntPipe({ optional: true })) cursor?: number){
-        return (this.postService.getAllPosts(cursor));
+    @UseGuards(JwtAuthGuard)
+    public getAllPosts(
+        @Query('cursor', new ParseIntPipe({ optional: true })) cursor: number  | undefined,
+        @Req() request: AuthRequest
+    ){
+        const payload = request.user;
+        return (this.postService.getAllPosts(cursor, payload.sub));
     }
 
 

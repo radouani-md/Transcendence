@@ -8,6 +8,8 @@ RUN npm ci
 
 COPY . .
 
+COPY --chmod=755 tools/social_scr.sh /social_scr.sh
+
 EXPOSE 3000
 
-CMD ["npm", "run", "start:dev"]
+ENTRYPOINT ["/social_scr.sh"]

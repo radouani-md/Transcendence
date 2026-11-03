@@ -8,6 +8,8 @@ RUN npm ci
 
 COPY . .
 
+COPY --chmod=755 tools/auth_scr.sh /auth_scr.sh
+
 EXPOSE 3000
 
-CMD ["npm", "run", "start:dev"]
+ENTRYPOINT ["/auth_scr.sh"]

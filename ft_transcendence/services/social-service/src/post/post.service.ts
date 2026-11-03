@@ -160,7 +160,7 @@ export class PostService {
         return ({ message: "The Post deleted successfully" })
     }
 
-    public async getPost(postId: number){
+    public async    getPost(postId: number, userId: number){
         
         const post = await this.prisma.post.findUnique({
             where: { id: postId },
@@ -170,15 +170,30 @@ export class PostService {
                     select: { reactions: true }
                 }
             }
-        }) 
+        })
 
         if (!post)
             throw new NotFoundException('post Not found');
+        let isLiked: boolean = false;
 
-        return ( {post} );
+        if ( userId !== undefined)
+        {
+            const reaction = await this.prisma.reaction.findUnique({
+                where: {
+                    userId_postId: {
+                        userId,
+                        postId
+                    }
+                }
+            })
+            if (reaction)
+                isLiked = true;
+        }
+
+        return ( {post, isLiked} );
     }
     
-    public async getAllPosts(cursor?: number) {
+    public async getAllPosts(cursor: number | undefined, userId: number) {
         
         const limit = 3;
 
@@ -196,6 +211,10 @@ export class PostService {
                 media: true,
                 _count: {
                     select: { reactions: true }
+                },
+                reactions: {
+                    where: { userId },
+                    select: { id: true }
                 }
             }
         })
@@ -211,8 +230,15 @@ export class PostService {
         const nextCursor = hasMorePosts ?
                             posts[limit - 1].id
                             : null
+        const likedposts = posts.map((post) => {
+            const { reactions, ...postData } = post;
+            return ({
+                ...postData,
+                isLiked: reactions.length > 0
+            })
+        })
 
-        return ( { posts, hasMorePosts, nextCursor } );
+        return ( { posts: likedposts, hasMorePosts, nextCursor } );
     }
 
 
