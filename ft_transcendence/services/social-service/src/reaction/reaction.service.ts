@@ -8,6 +8,7 @@ export class ReactionService {
     constructor(private readonly prisma: PrismaService) { }
 
     public async likePost(userId: number, postId: number) {
+        
         const post = await this.prisma.post.findUnique({
             where: { id: postId }
         })

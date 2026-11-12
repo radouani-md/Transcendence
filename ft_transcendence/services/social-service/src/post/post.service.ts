@@ -167,7 +167,10 @@ export class PostService {
             include: {
                 media: true,
                 _count: {
-                    select: { reactions: true }
+                    select: { 
+                        reactions: true,
+                        comments: true
+                    }
                 }
             }
         })
@@ -210,7 +213,10 @@ export class PostService {
             include: {
                 media: true,
                 _count: {
-                    select: { reactions: true }
+                    select: {
+                        reactions: true,
+                        comments: true
+                    }
                 },
                 reactions: {
                     where: { userId },

@@ -6,6 +6,7 @@ import { ClubModule } from './club/club.module.js';
 import { UploadsModule } from './uploads/uploads.module.js';
 import { PostModule } from './post/post.module.js';
 import { ReactionModule } from './reaction/reaction.module.js';
+import { CommentModule } from './comment/comment.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -15,7 +16,8 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     ClubModule,
     PrismaModule,
     PostModule,
-    ReactionModule
+    ReactionModule,
+    CommentModule
   ]
 })
 export class AppModule {}
