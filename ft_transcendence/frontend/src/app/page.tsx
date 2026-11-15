@@ -1,6 +1,4 @@
-import Image from "next/image";
-import ClubCard from "./components/ClubCard";
-import Comment from "./components/exam1";
+import ClubCard from "../components/ClubCard";
 
 export default function Home() {
     return (
