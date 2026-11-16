@@ -2,11 +2,11 @@
 
 
 
-export default function all(){
+export default function Marcketplace(){
     return (
-        <main>
-            <h2>Touchline</h2>
-            <p>welcome to our webSite </p>
-        </main>
+         <div>
+            <h1>Marcketplace</h1>
+        </div>
     )
 }
+

@@ -1,6 +1,6 @@
 import ClubCard from "../components/ClubCard";
 
-export default function Home() {
+export default function Haome() {
     return (
         <main>
             <h1> Touchline App </h1>
