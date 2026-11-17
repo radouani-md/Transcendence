@@ -1,0 +1,134 @@
+name: touchline-dev
+
+services:
+  postgres:
+    image: postgres:17-bookworm
+    container_name: touchline-postgres
+    restart: unless-stopped
+  
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?required}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?required}
+      POSTGRES_DB: ${POSTGRES_DB:?required}
+
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - database
+
+
+  auth-service:
+    build:
+      context: ./services/auth-service
+  
+    container_name: touchline-auth
+
+    env_file:
+      - .env
+      
+    environment:
+      DATABASE_URL: ${AUTH_DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+
+    restart: unless-stopped
+
+    ports:
+      - "127.0.0.1:3001:3000"
+
+    volumes:
+      - ./services/auth-service:/app
+      - /app/node_modules
+
+    networks:
+      - database
+
+    depends_on:
+        postgres:
+          service-healthy
+
+  social-service:
+    build: 
+      context: ./services/social-service
+    
+    container_name: touchline-social
+
+    restart: unless-stopped
+
+    env_file:
+      - .env
+    
+    environment:
+      DATABASE_URL: ${SOCIAL_DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+    
+    ports:
+      - "127.0.0.1:3002:3000"
+
+    networks:
+      - database
+    volumes:
+      - ./services/social-service:/app
+      - /app/node_modules
+
+    depends_on:
+      postgres:
+        service-healthy
+
+
+
+
+
+
+
+
+
+  frontend:
+    build:
+      context: ./frontend
+
+    container_name: touchline-frontend
+
+    restart: unless-stopped
+
+    ports:
+      - "127.0.0.1:3000:3000"
+
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+
+    environment:
+      WATCHPACK_POLLING: "true"
+
+    networks:
+      - database
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+volumes:
+  postgres_data:
+
+networks:
+  database:
