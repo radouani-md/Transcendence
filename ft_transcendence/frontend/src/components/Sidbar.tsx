@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "../../public/images/Logo.png"
-import { House, Users, Store, Ticket, Settings, MessageCircle, MessagesSquare} from "lucide-react";
+import { House, Users, Store, Ticket, Settings, Monitor, MessagesSquare} from "lucide-react";
 import { usePathname } from "next/navigation";
 import { LiaTvSolid } from "react-icons/lia";
 import path from "path";
@@ -23,7 +23,7 @@ const Sidbar = () =>
 
 
     return (
-        <aside className="min-h-screen w-67 shrink-0 border-r border-[#E5E7EB] ">
+        <aside className="hidden lg:block lg:fixed lg:top-0 lg:left-0 lg:h-screen w-67 overflow-y-auto border-r border-[#E5E7EB] bg-white z-40">
             <Link href="/" className="flex items-center px-4 py-5 gap-2">
                 <Image 
                     src={Logo}
@@ -56,7 +56,7 @@ const Sidbar = () =>
                 </Link>
 
                 <Link href="/matches" className={`flex items-center gap-3 px-4 py-2  hover:bg-[#EFF6FF] hover:text-[#0055FF] hover:border-r-4 hover:border-[#0055FF] transition-colors duration-200 rounded-xl ${isMatches? "bg-[#EFF6FF] text-[#0055FF] border-r-4 border-[#0055FF]":""}`} >
-                    <LiaTvSolid className="w-5 h-5" />
+                    <Monitor className="w-5 h-5" />
                     <span> Matches </span>
                 </Link>
 

@@ -1,4 +1,4 @@
-import ClubCard from "../components/ClubCard";
+import ClubCard from "../components/PostCard";
 
 export default function Haome() {
     return (
