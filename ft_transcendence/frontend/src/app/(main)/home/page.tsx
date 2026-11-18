@@ -2,9 +2,14 @@
 
 import ClubCard from "@/components/PostCard";
 import Image from "next/image";
-import {ImageIcon, Video} from 'lucide-react'
+import { ImageIcon, Video } from 'lucide-react'
 import profile from "../../../../public/images/mradouan7.jpg"
+import raja from "../../../../public/images/raja.jpg"
+import widad from "../../../../public/images/widad.jpg"
+import far from "../../../../public/images/far.jpg"
+
 import PostCard from "@/components/PostCard";
+import { ProfilePicture } from "@/components/ProfilePicture";
 
 export default function HomePage() {
     return (
@@ -13,16 +18,11 @@ export default function HomePage() {
                 <div className="flex flex-col gap-6 bg-white rounded-xl border border-[#E5E7EB] p-4">
 
                     <div className="flex items-center gap-3">
-                        <Image
-                        src={profile}
-                        alt="User profile"
-                        className="rounded-full h-12 w-12 shrink-0 object-cover"
-                        />
-
+                        <ProfilePicture path="" size="size-12" />
                         <input
-                        type="text"
-                        placeholder="What's on your mind about today's matches?"
-                        className="flex-1 min-w-0 px-4 py-3 bg-[#F3F4F6] rounded-full focus:outline-none focus:ring-2 focus:ring-[#0055FF]"
+                            type="text"
+                            placeholder="What's on your mind about today's matches?"
+                            className="flex-1 min-w-0 px-4 py-3 bg-[#F3F4F6] rounded-full focus:outline-none focus:ring-2 focus:ring-[#0055FF]"
                         />
                     </div>
 
@@ -30,24 +30,24 @@ export default function HomePage() {
 
                     <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-2">
-                            <button 
+                            <button
                                 type="button"
                                 className="flex items-center gap-2 px-2 sm:px-3 py-2 font-medium rounded-lg bg-[#F3F4F6] text-[#0055FF] cursor-pointer hover:bg-[#d0d9eb] transition-colors duration-200"
                             >
                                 <ImageIcon className="w-5 h-5 text-[#0055FF]" />
                                 <span>Photo</span>
                             </button>
-                            
+
                             <button
                                 type="button"
                                 className="flex items-center gap-2 bg-[#F3F4F6] text-[#FF4D00] px-2 sm:px-3 py-2 rounded-lg cursor-pointer hover:bg-[#d0d9eb] transition-colors duration-200"
-                                >
+                            >
                                 <Video className="w-5 h-5 text-[#FF4D00]" />
-                                    Video
-                                </button>
+                                Video
+                            </button>
                         </div>
 
-                        <button 
+                        <button
                             type="button"
                             className="bg-[#0055FF] px-3 sm:px-5 py-2 rounded-lg text-white font-medium cursor-pointer hover:bg-[#0044CC] transition-colors duration-200"
                         >
@@ -65,13 +65,84 @@ export default function HomePage() {
 
             </section>
 
-            <aside className="hidden lg:block">
-                right sidbar
+            <aside className="hidden lg:flex flex-col gap-6 p-4 lg:sticky lg:top-24  max-h-[calc(100vh-6rem)] ">
+                <div className="bg-white rounded-xl border border-[#E5E7EB] flex flex-col gap-3 p-4">
+                    <div>
+                        <h2 className="font-bold text-[15px]"> Trending News </h2>
+                    </div>
+                    <div>
+                        <p className="text-[#3675f4] font-medium text-sm">#ClashOfChampions</p>
+                        <p className="text-[11px] text-[#6B7280]">Male Tournament ⚬ 4 posts</p>
+                    </div>
+                    <div>
+                        <p className="text-[#3675f4] font-medium text-sm">#GoldenBootStricker</p>
+                        <p className="text-[11px] text-[#6B7280]">Player State ⚬ 54 posts</p>
+                    </div>
+                    <div>
+                        <p className="text-[#3675f4] font-medium text-sm">#UnitedFanZone</p>
+                        <p className="text-[11px] text-[#6B7280]">Fan Clubs ⚬ 12 posts</p>
+                    </div>
+
+                </div>
+
+                <div className="bg-white rounded-xl border border-[#E5E7EB] flex flex-col gap-3 p-4">
+                    <div>
+                        <h2 className="font-bold text-[15px]"> Popular Clubs </h2>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <Image
+                            src={raja}
+                            alt="Real Madrid"
+                            className="w-10 h-10 rounded-full border border-[#6B7280]  object-contain shrink-0"
+                        />
+                        <div className="min-w-0">
+                            <p className="text-sm font-medium truncate">
+                                Raja
+                            </p>
+                            <p className="text-xs text-[#6B7280]">
+                                Football Club
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                        <Image
+                            src={widad}
+                            alt="FC Barcelona"
+                            className="w-10 h-10 rounded-full border border-[#6B7280] object-contain shrink-0"
+                        />
+                        <div className="min-w-0">
+                            <p className="text-sm font-medium truncate">
+                                Widade
+                            </p>
+                            <p className="text-xs text-[#6B7280]">
+                                Football Club
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                        <Image
+                            src={far}
+                            alt="Manchester City"
+                            className="w-10 h-10 rounded-full border border-[#6B7280]  object-contain shrink-0"
+                        />
+                        <div className="min-w-0">
+                            <p className="text-sm font-medium truncate">
+                                FAR
+                            </p>
+                            <p className="text-xs text-[#6B7280]">
+                                Football Club
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
             </aside>
 
         </div>
     );
-}    
+}
 
 
-     
