@@ -1,12 +1,13 @@
+import ProductCard from "@/components/ProductCard";
 
 
 
 
 export default function Marcketplace(){
     return (
-         <div>
-            <h1>Marcketplace</h1>
-        </div>
+        <>
+            <ProductCard />
+        </>
     )
 }
-
+/*new branch*/

@@ -6,6 +6,7 @@ import profile  from "../../public/images/mradouan7.jpg";
 import lamin  from "../../public/images/imgae1.jpg";
 import lamin1  from "../../public/images/imgae2.jpg";
 import {ImageIcon, Video, MessageCircle, Heart} from 'lucide-react'
+import { ProfilePicture } from "./ProfilePicture";
 
 // type ClubCardProps = {
 //     name: string;
@@ -31,25 +32,12 @@ export default function PostCard(/*{name, description}: ClubCardProps*/) {
         setLike((prev) => !prev);
     }
 
-    function increaseDecreaseComments()
-    {
-        
-        if (!isCommented)
-            setCommentsCount((prev) => prev + 1)
-        else
-            setCommentsCount((prev) => prev - 1)
-        setComment((prev) => !prev);
-    }
     return (
         <article className="bg-white rounded-xl border border-[#E5E7EB] p-4">
             <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-4">
                     <div className="flex items-center gap-4">
-                        <Image
-                            src={profile}
-                            alt="User profile"
-                            className="rounded-full h-12 w-12 shrink-0 object-cover"
-                        />
+                        <ProfilePicture path="" size="size-12" />
                         <div>
                             <p className="text-sm font-semibold">mohammed radouani</p>  
                             <p className="text-xs text-[#6B7280]">@radouani-md</p>
@@ -81,7 +69,6 @@ export default function PostCard(/*{name, description}: ClubCardProps*/) {
                     
                     <button
                         type="button"
-                        onClick={increaseDecreaseComments}
                         className={`flex items-center gap-2 px-2 sm:px-3 py-2 hover:text-[#0055FF] ${isCommented? "text-[#0055FF]" : "text-[#6B7280]"} rounded-lg cursor-pointer transition-colors duration-200`}
                         >
                         <MessageCircle fill={`${isCommented? "#0055FF" : "transparent"}`} className="w-5 h-5 " />
