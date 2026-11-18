@@ -8,6 +8,7 @@ import { Search } from "lucide-react";
 import Link from "next/link";
 import { Store } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { ProfilePicture } from "./ProfilePicture";
 
 
 
@@ -62,12 +63,9 @@ const Header = () => {
                     </Link>
 
                     <Link href="/profile" className="flex items-center gap-3 shrink-0">
-                        <Image
-                            src={profile}
-                            alt="User profile"
-                            className="rounded-full h-10 w-10 shrink-0 object-cover"
-                        />
 
+                        <ProfilePicture size="size-10" path={`${profile}`} />
+                        
                         <div className="hidden xl:flex flex-col min-w-0 max-w-40">
                             <p className="text-sm font-semibold truncate">
                                 mohammed radouani

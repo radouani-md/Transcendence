@@ -8,8 +8,10 @@ RUN npm ci
 
 COPY . .
 
-COPY --chmod=755 tools/social_scr.sh /social_scr.sh
+RUN npx prisma generate
+
+RUN npm run build
 
 EXPOSE 3000
 
-ENTRYPOINT ["/social_scr.sh"] 
+CMD ["node" , "dist/main.ts"]

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import Logo from "../../public/images/Logo.png"
+import Logo from "../../public/images/Logo.png";
 import { House, Users, Store, Ticket, Settings, Monitor, MessagesSquare} from "lucide-react";
 import { usePathname } from "next/navigation";
 import { LiaTvSolid } from "react-icons/lia";

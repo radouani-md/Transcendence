@@ -9,6 +9,7 @@ import widad from "../../../../public/images/widad.jpg"
 import far from "../../../../public/images/far.jpg"
 
 import PostCard from "@/components/PostCard";
+import { ProfilePicture } from "@/components/ProfilePicture";
 
 export default function HomePage() {
     return (
@@ -17,12 +18,7 @@ export default function HomePage() {
                 <div className="flex flex-col gap-6 bg-white rounded-xl border border-[#E5E7EB] p-4">
 
                     <div className="flex items-center gap-3">
-                        <Image
-                            src={profile}
-                            alt="User profile"
-                            className="rounded-full h-12 w-12 shrink-0 object-cover"
-                        />
-
+                        <ProfilePicture path="" size="size-12" />
                         <input
                             type="text"
                             placeholder="What's on your mind about today's matches?"

@@ -4,19 +4,33 @@ services:
   postgres:
     image: postgres:17-bookworm
     container_name: touchline-postgres
+
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
     restart: unless-stopped
   
-    env_file:
-      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?required}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?required}
+      POSTGRES_DB: ${POSTGRES_DB:?required}
+
     ports:
       - "127.0.0.1:5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - backend
+      - database
 
 
   auth-service:
+    command: sh -c "npx prisma generate && npm run start:dev -- --no-shell"
     build:
       context: ./services/auth-service
   
@@ -28,6 +42,7 @@ services:
     environment:
       DATABASE_URL: ${AUTH_DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
+      PORT: "3000"
 
     restart: unless-stopped
 
@@ -39,13 +54,15 @@ services:
       - /app/node_modules
 
     networks:
-      - backend
+      - database
+      - app
 
     depends_on:
         postgres:
-          service-healthy
+          condition: service_healthy
 
   social-service:
+    command: sh -c "npx prisma generate && npm run start:dev -- --no-shell"
     build: 
       context: ./services/social-service
     
@@ -59,19 +76,21 @@ services:
     environment:
       DATABASE_URL: ${SOCIAL_DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
+      PORT: "3000"
     
     ports:
       - "127.0.0.1:3002:3000"
 
     networks:
-      - backend
+      - database
+      - app
     volumes:
       - ./services/social-service:/app
       - /app/node_modules
 
     depends_on:
       postgres:
-        service-healthy
+        condition: service_healthy
 
 
 
@@ -82,6 +101,7 @@ services:
 
 
   frontend:
+    command: npm run dev
     build:
       context: ./frontend
 
@@ -98,10 +118,11 @@ services:
       - /app/.next
 
     environment:
-      WATCHPACK_POLLING: "true"
+      AUTH_SERVICE_URL:   http://auth-service:3000
+      SOCIAL_SERVICE_URL: http://social-service:3000
 
     networks:
-      - backend
+      - app
 
 
 
@@ -128,4 +149,5 @@ volumes:
   postgres_data:
 
 networks:
-  backend:
+  database:
+  app:
