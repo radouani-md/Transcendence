@@ -1,27 +1,45 @@
 'use client'
 
+import productImage from "../../public/images/kora3.jpg"
+import Image from "next/image";
+import { ProfilePicture } from "./ProfilePicture";
+
 
 
 
 const ProductCard = () => {
     return (
-        
-        <section className="grid grid-cols-1 lg:grid-cols-4 gap-6 p-4 lg:p-6">
-            
-            <article>
-                <p>Fotball soccer</p>
-            </article>
-            <article>
-                <p>Fotball soccer</p>
-            </article>
-            <article>
-                <p>Fotball soccer</p>
-            </article>
-            <article>
-                <p>Fotball soccer</p>
-            </article>
 
-        </section>
+        <article className="bg-white rounded-xl border border-[#E5E7EB] overflow-hidden">
+            <Image
+                src={productImage}
+                alt="Football product"
+                className="w-full h-48 object-cover"
+            />
+            <div className="flex flex-col gap-4 p-4">
+                <div className="bg-[#f1f6f5] w-13 text-[#6b7280b7] text-[12px] text-center rounded-full font-medium">
+                    <span> NEW </span>
+                </div>
+                <h3 className="text-sm font-semibold text-[#111111] truncate">
+                    Real Madrid Jersey
+                </h3>
+                <div className="flex items-center gap-2 min-w-0">
+                    {/* <ProfilePicture path="" size="size-8" /> */}
+
+                    <span className="text-xs text-[#6B7280] truncate">
+                       By Mohammed Radouani
+                    </span>
+                </div>
+                <div className="flex justify-between">
+                    <p className="lg:text-[14px] font-bold text-[#0055FF] mt-1 md:text-[14px] ">
+                        250 MAD
+                    </p>
+                    <button className=" bg-[#FF4D00]  text-white text-sm h-8 w-14 px-2 py-1 rounded-lg font-medium cursor-pointer hover:bg-[#E64500] transition-colors duration-200">
+                        Buy
+                    </button>
+                </div>
+            </div>
+        </article>
 
     )
 }

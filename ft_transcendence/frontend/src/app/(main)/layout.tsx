@@ -1,27 +1,30 @@
+
 import Header from "@/components/Header";
 import MobileHeader from "@/components/MobileHeader";
-import  Sidbar from "@/components/Sidbar"
+import Sidbar from "@/components/Sidbar";
 import SidbarMobile from "@/components/SidbarMobile";
-// import "../globals.css";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <div className="flex min-h-screen">
+    <div className="min-h-screen w-full">
       <Sidbar />
 
-      <div className="lg:ml-67">
+      <div className="w-full min-w-0 lg:w-[calc(100%-268px)] lg:ml-67">
         <MobileHeader />
 
         <div className="hidden lg:block">
           <Header />
         </div>
 
-        <main className="pt-27 lg:pb-0 pb-20 lg:pt-20" >
+        <main className="w-full min-w-0 pt-27 pb-20 lg:pt-20 lg:pb-0  bg-[#F3F4F6]">
           {children}
         </main>
 
         <SidbarMobile />
-
       </div>
     </div>
   );

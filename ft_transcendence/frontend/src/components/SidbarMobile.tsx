@@ -24,42 +24,42 @@ const SidbarMobile = () =>
 
 
     return (
-        <aside >
-            <nav className="px-2 py-2 fixed bottom-0 left-0 w-full lg:hidden z-50 border-t border-[#E5E7EB] bg-white">
-                <div className="flex items-center justify-around">
+            <aside >
+               <nav className="px-1 sm:px-2 py-2 fixed bottom-0 left-0 w-full lg:hidden z-50 border-t border-[#E5E7EB] bg-white">
+                    <div className="flex items-center justify-between w-full gap-1">
 
-                    <Link href="/home" className={`px-4 py-2 text-base flex flex-col items-center  hover:text-[#0055FF] transition-colors duration-200 rounded-full ${isHome? "text-[#0055FF]":"text-[#6B7280]"}`} >
-                        <House className="w-7 h-7" />
-                        <span> Home </span>
+                        <Link href="/home" className={`min-w-0 flex-1 px-0.5 sm:px-2 py-2 text-[10px] sm:text-xs flex flex-col items-center gap-1 text-center hover:text-[#0055FF] transition-colors duration-200 ${isHome ? "text-[#0055FF]" : "text-[#6B7280]"}`} >
+                            <House className="size-5" />
+                            <span> Home </span>
 
-                    </Link>
-                    <Link href="/matches" className={`px-4 py-2 text-base flex flex-col items-center  hover:text-[#0055FF] transition-colors duration-200 rounded-full ${isMatches? "text-[#0055FF]":"text-[#6B7280]"}`} >
-                        <Monitor className="w-7 h-7" />
-                        <span> Matches </span>
-                    </Link>
-                    <Link href="/marketplace" className={`px-4 py-2 text-base flex flex-col items-center  hover:text-[#0055FF] transition-colors duration-200 rounded-full ${isMarketplace? "text-[#0055FF]":"text-[#6B7280]"}`} >
-                        <Store className="w-7 h-7" />
-                        <span> Marketplace </span>
-                    </Link>
-                    <Link href="/chat" className={`px-4 py-2 text-base flex flex-col items-center  hover:text-[#0055FF] transition-colors duration-200 rounded-full ${isChat? "text-[#0055FF]":"text-[#6B7280]"}`} >
-                        <MessagesSquare className="w-7 h-7" />
-                        <span> Chat </span>
-                    </Link>
-                    <Link href="/profile" className={`px-4 py-2 text-base flex flex-col items-center  hover:text-[#0055FF] transition-colors duration-200 rounded-full ${isProfile? "text-[#0055FF]":"text-[#6B7280]"}`} >
-                        {/* <Image 
-                                src={profile}
-                                alt="user prifle"
-                                className={`rounded-full h-7 w-7 text-base object-cover text-[#6B7280] ${isProfile? "text-[#0055FF]":""}`} 
-                            /> */}
-                        <UserRound className="w-7 h-7" />
-                        <span> Profile </span>
-                    </Link>
+                        </Link>
+                        <Link href="/matches" className={`min-w-0 flex-1 px-0.5 sm:px-2 py-2 text-[10px] sm:text-xs flex flex-col items-center gap-1 text-center hover:text-[#0055FF] transition-colors duration-200 ${isMatches ? "text-[#0055FF]" : "text-[#6B7280]"}`} >
+                            <Monitor className="size-5" />
+                            <span> Matches </span>
+                        </Link>
+                        <Link href="/marketplace" className={`min-w-0 flex-1 px-0.5 sm:px-2 py-2 text-[10px] sm:text-xs flex flex-col items-center gap-1 text-center hover:text-[#0055FF] transition-colors duration-200 ${isMarketplace ? "text-[#0055FF]" : "text-[#6B7280]"}`} >
+                            <Store className="size-5" />
+                            <span> Marketplace </span>
+                        </Link>
+                        <Link href="/chat" className={`min-w-0 flex-1 px-0.5 sm:px-2 py-2 text-[10px] sm:text-xs flex flex-col items-center gap-1 text-center hover:text-[#0055FF] transition-colors duration-200 ${isChat ? "text-[#0055FF]" : "text-[#6B7280]"}`} >
+                            <MessagesSquare className="size-5" />
+                            <span> Chat </span>
+                        </Link>
+                        <Link href="/profile" className={`min-w-0 flex-1 px-0.5 sm:px-2 py-2 text-[10px] sm:text-xs flex flex-col items-center gap-1 text-center hover:text-[#0055FF] transition-colors duration-200 ${isProfile ? "text-[#0055FF]" : "text-[#6B7280]"}`} >
+                            {/* <Image 
+                                    src={profile}
+                                    alt="user prifle"
+                                    className={`rounded-full h-7 w-7 text-base object-cover text-[#6B7280] ${isProfile? "text-[#0055FF]":""}`} 
+                                /> */}
+                            <UserRound className="w-7 h-7" />
+                            <span> Profile </span>
+                        </Link>
 
-                </div>
+                    </div>
 
-                
-            </nav>
-        </aside>
+                    
+                </nav>
+            </aside>
     );
 }
 
