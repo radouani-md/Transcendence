@@ -2,7 +2,7 @@
 
 import ClubCard from "@/components/PostCard";
 import Image from "next/image";
-import { ImageIcon, Video } from 'lucide-react'
+import { AwardIcon, ImageIcon, Video } from 'lucide-react'
 import profile from "../../../../public/images/mradouan7.jpg"
 import raja from "../../../../public/images/raja.jpg"
 import widad from "../../../../public/images/widad.jpg"
@@ -10,8 +10,111 @@ import far from "../../../../public/images/far.jpg"
 
 import PostCard from "@/components/PostCard";
 import { ProfilePicture } from "@/components/ProfilePicture";
+import { useEffect, useRef, useState } from "react";
+import { getPosts } from "@/lib/api/social";
+import { Post, PostsResponse } from "@/types/post";
+
+
+
 
 export default function HomePage() {
+    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInJvbGUiOiJDTFVCIiwiaWF0IjoxNzk1MjcyOTQ3LCJleHAiOjE3OTUzNTkzNDd9.lNpby-fapIBO92_0Osu4WxsM_LPiYKP43QNxBKPpZ8o";
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJGQU4iLCJpYXQiOjE3OTUyNzk5NzIsImV4cCI6MTc5NTM2NjM3Mn0.rlnhCP5YvXkdpRxmM4R_xvOQGKzFV4EqO0yx7dGvWME";
+    const [posts, setPosts] = useState<Post[]>([]);
+    const [nextCursor, setNextCursor] = useState<number | null>(null);
+    const [hasMorePosts, setHasMorePosts] = useState(true);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
+    const observerRef = useRef<HTMLDivElement | null>(null);
+    const loadingRef = useRef(false);
+
+
+    async function loadMorePosts() {
+        if (
+            !token ||
+            !hasMorePosts ||
+            nextCursor === null ||
+            isLoadingMore ||
+            loadingRef.current
+        ) return;
+
+        loadingRef.current = true;
+        setIsLoadingMore(true);
+        try {
+            const data = await getPosts(token, nextCursor);
+            setPosts((prev) => [...prev, ...data.posts]);
+            setNextCursor(data.nextCursor);
+            setHasMorePosts(data.hasMorePosts);
+        }
+        catch (error) {
+            console.error("Failed to fetch posts:", error);
+        }
+        finally {
+            loadingRef.current = false;
+            setIsLoadingMore(false);
+        }
+    }
+
+
+
+    useEffect(() => {
+        if (!token) return;
+        let cancelled = false;
+
+        async function fetchPosts() {
+            loadingRef.current = true;
+
+            try {
+                const data: PostsResponse = await getPosts(token);
+                if (cancelled) return;
+                setPosts(data.posts);
+                setNextCursor(data.nextCursor);
+                setHasMorePosts(data.hasMorePosts);
+
+                // setPosts((prev) => { console.log(prev); return prev })
+
+            }
+            catch (error) {
+                console.error("Failed to fetch posts:", error);
+            }
+            finally {
+                loadingRef.current = false;
+            }
+        }
+
+        fetchPosts();
+        return () => {
+            cancelled = true;
+        };
+    }, [token]);
+
+    useEffect(() => {
+        const element = observerRef.current;
+        if (
+            !element ||
+            !token ||
+            !hasMorePosts ||
+            nextCursor === null ||
+            isLoadingMore
+        ) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                loadMorePosts();
+            }
+        });
+        observer.observe(element);
+        function cleanup() {
+            observer.disconnect();
+        }
+        return cleanup;
+
+    }, [nextCursor, hasMorePosts, isLoadingMore, token]);
+
+
+
+
+
+
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-4 lg:p-6">
             <section className="lg:col-span-2 flex flex-col gap-6">
@@ -57,11 +160,14 @@ export default function HomePage() {
 
                 </div>
 
-                <PostCard />
-                <PostCard />
-                <PostCard />
-                <PostCard />
-                <PostCard />
+
+                {posts.map((post) => (
+                    <PostCard key={post.id} post={post} />
+                ))}
+
+
+
+                <div ref={observerRef} />
 
             </section>
 

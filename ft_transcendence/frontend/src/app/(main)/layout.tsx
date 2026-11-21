@@ -10,7 +10,7 @@ export default function Layout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen w-full">
+    <div>
       <Sidbar />
 
       <div className="w-full min-w-0 lg:w-[calc(100%-268px)] lg:ml-67">
@@ -20,7 +20,7 @@ export default function Layout({
           <Header />
         </div>
 
-        <main className="w-full min-w-0 pt-27 pb-20 lg:pt-20 lg:pb-0  bg-[#F3F4F6]">
+        <main className="w-full min-w-0 min-h-screen pt-27 pb-20 lg:pt-20 lg:pb-0  bg-[#F3F4F6]">
           {children}
         </main>
 

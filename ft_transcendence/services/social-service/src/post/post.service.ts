@@ -225,8 +225,8 @@ export class PostService {
             }
         })
 
-        if (!posts.at(0))
-            throw new NotFoundException('posts Not found');
+        // if (!posts.at(0))
+        //     throw new NotFoundException('posts Not found');
 
         const hasMorePosts: boolean = posts.length > limit;
         
