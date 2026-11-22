@@ -31,9 +31,17 @@ export type Post = {
     };
 };
 
+export type CommentP = {
+    id: number;
+    content: string;
+}
+
 
 export type PostsResponse = {
     posts: Post[];
     hasMorePosts: boolean;
     nextCursor: number | null;
+};
+export type CommentsResponse = {
+    comments: CommentP[];
 };

@@ -25,12 +25,12 @@ export class CommentService {
                 content
             }
         })
+        console.log(newComment);
+
         return ({ newComment });
     }
 
     public async getComments(cursor: number | undefined, postId: number) {
-
-        const limit = 3;
 
         const post = await this.prisma.post.findUnique({
             where: { id: postId}
@@ -39,26 +39,12 @@ export class CommentService {
             throw new NotFoundException('post Not Found');
         const comments = await this.prisma.comment.findMany({
             where: {
-                postId,
-                ...(cursor !== undefined && {
-                    id: { lt: cursor},
-                })
+                postId
             },
-            take: limit + 1,
             orderBy: { id: 'desc' },
         })
 
-
-        const hasMoreComments: boolean = comments.length > limit;
-
-        if (hasMoreComments)
-            comments.pop();
-
-        const nextCursor = hasMoreComments ?
-                            comments[limit - 1].id
-                            : null
-
-        return ({ comments, hasMoreComments, nextCursor });
+        return ({ comments });
     }
 
     public async deleteComment(commentId: number, userId: number) {

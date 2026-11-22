@@ -1,14 +1,9 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import { PostDto, UpdatePostDto } from "./dtos/post.dto.js";
-import { PrismaModule } from "../prisma/prisma.module.js";
 import { PrismaService } from "../prisma/prisma.service.js";
-import { ClubDto } from "../club/dtos/club.dto.js";
 import { MediaType } from "../generated/prisma/enums.js";
-import { create } from "domain";
-import { unlink } from 'node:fs/promises';
 import { join } from 'node:path';
 import { unlinkSync } from "node:fs";
-import { take } from "rxjs";
 
 @Injectable()
 export class PostService {
@@ -243,7 +238,6 @@ export class PostService {
                 isLiked: reactions.length > 0
             })
         })
-
         return ( { posts: likedposts, hasMorePosts, nextCursor } );
     }
 

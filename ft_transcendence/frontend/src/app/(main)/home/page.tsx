@@ -18,8 +18,8 @@ import { Post, PostsResponse } from "@/types/post";
 
 
 export default function HomePage() {
-    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInJvbGUiOiJDTFVCIiwiaWF0IjoxNzk1MjcyOTQ3LCJleHAiOjE3OTUzNTkzNDd9.lNpby-fapIBO92_0Osu4WxsM_LPiYKP43QNxBKPpZ8o";
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJGQU4iLCJpYXQiOjE3OTUyNzk5NzIsImV4cCI6MTc5NTM2NjM3Mn0.rlnhCP5YvXkdpRxmM4R_xvOQGKzFV4EqO0yx7dGvWME";
+    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInJvbGUiOiJDTFVCIiwiaWF0IjoxNzk1MzM1NjIzLCJleHAiOjE3OTU0MjIwMjN9.OdW1TPIM0V4LiPDC06sWQP91uJBhZZuKE18HXW5jmrI" // club;
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJGQU4iLCJpYXQiOjE3OTUzMzU0NzMsImV4cCI6MTc5NTQyMTg3M30.qVnPYZV4MrYj2RLzZrPjLZH05b9AbwAh5bMTdWEhwlA" //fan;
     const [posts, setPosts] = useState<Post[]>([]);
     const [nextCursor, setNextCursor] = useState<number | null>(null);
     const [hasMorePosts, setHasMorePosts] = useState(true);

@@ -118,6 +118,7 @@ export class PostController {
         @Req() request: AuthRequest
     ){
         const payload = request.user;
+        console.log(payload);
         return (this.postService.getAllPosts(cursor, payload.sub));
     }
 

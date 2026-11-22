@@ -12,6 +12,7 @@ export class CommentController {
     @UseGuards(JwtAuthGuard)
     public addComment(@Body() body: CommentDto, @Req() request: AuthRequest, @Param('id', ParseIntPipe) postId: number) {
         const payload  = request.user;
+        console.log("__--_>", body);
 
         return ( this.commentService.addComment(body, payload.sub, postId) );
     }
