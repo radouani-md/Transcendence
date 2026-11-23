@@ -1,9 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule, ObserveInstrument } from './app.module.js';
 import { ValidationPipe } from '@nestjs/common';
+import { join } from 'path';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     instrument: ObserveInstrument,
   });
 
@@ -14,6 +16,9 @@ async function bootstrap() {
     })
   )
   app.enableCors();
+  app.useStaticAssets(join(process.cwd(), 'images'), {
+    prefix: '/images/',
+  });
   await app.listen(process.env.PORT ?? 3000);
 }
 await bootstrap();

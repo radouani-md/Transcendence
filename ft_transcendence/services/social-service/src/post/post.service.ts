@@ -1,18 +1,33 @@
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, UnsupportedMediaTypeException } from "@nestjs/common";
 import { PostDto, UpdatePostDto } from "./dtos/post.dto.js";
 import { PrismaService } from "../prisma/prisma.service.js";
 import { MediaType } from "../generated/prisma/enums.js";
 import { join } from 'node:path';
 import { unlinkSync } from "node:fs";
+import { fileTypeFromBuffer } from "../../node_modules_backup/file-type/source/index.js";
 
 @Injectable()
 export class PostService {
 
-    constructor(private readonly prisma: PrismaService){}
+    constructor(private readonly prisma: PrismaService) { }
 
-    public async sharePost(postDto: PostDto, userId: number, file: Express.Multer.File)
-    {
-        const {content} = postDto;
+    public async sharePost(postDto: PostDto, userId: number, file: Express.Multer.File) {
+        const allowedMimeTypes = [
+            'image/png',
+            'image/jpeg',
+            'image/webp',
+            'video/mp4',
+            'video/webm',
+        ];
+        const { content } = postDto;
+        const fileBinary = await fileTypeFromBuffer(file.buffer);
+
+        if (fileBinary === undefined)
+            throw new UnsupportedMediaTypeException('Unknown file type');
+
+        if (!allowedMimeTypes.includes(fileBinary.mime)) {
+            throw new BadRequestException('Unsupported file type');
+        }
 
         const club = await this.prisma.club.findUnique({
             where: { userId }
@@ -22,8 +37,8 @@ export class PostService {
             throw new NotFoundException("Club profile not found");
 
         let typeM: MediaType = file.mimetype.startsWith('video/')
-        ? 'VIDEO'
-        : 'IMAGE';
+            ? 'VIDEO'
+            : 'IMAGE';
 
         const newPost = await this.prisma.post.create({
             data: {
@@ -31,22 +46,21 @@ export class PostService {
                 content,
                 media: {
                     create: {
-                        url:  file.path,
+                        url: file.path,
                         type: typeM,
-                        },
-                    }
+                    },
+                }
             },
             include: {
                 media: true
             }
         })
-        
+
         return ({ newPost });
     }
 
-    public async updatePost(updatePostDto: UpdatePostDto, postId: number, userId: number, file: Express.Multer.File)
-    {
-        const {content} = updatePostDto;
+    public async updatePost(updatePostDto: UpdatePostDto, postId: number, userId: number, file: Express.Multer.File) {
+        const { content } = updatePostDto;
 
         const club = await this.prisma.club.findUnique({
             where: { userId }
@@ -77,48 +91,46 @@ export class PostService {
                 id: postId,
             },
             data: {
-                ...(content !== undefined && {content}),
+                ...(content !== undefined && { content }),
                 ...(file && {
                     media: post.media[0]
-                    ? {
-                        update: {
-                            where: {
-                                id: post.media[0].id
-                            },
-                            data: {
-                                url: file.path,
-                                type: file.mimetype.startsWith('video/') ? 'VIDEO':'IMAGE'
+                        ? {
+                            update: {
+                                where: {
+                                    id: post.media[0].id
+                                },
+                                data: {
+                                    url: file.path,
+                                    type: file.mimetype.startsWith('video/') ? 'VIDEO' : 'IMAGE'
+                                }
                             }
                         }
-                    }
-                    :{
-                        create: {
-                        url:  file.path,
-                        type: file.mimetype.startsWith('video/') ? 'VIDEO':'IMAGE',
-                        },
-                    } 
+                        : {
+                            create: {
+                                url: file.path,
+                                type: file.mimetype.startsWith('video/') ? 'VIDEO' : 'IMAGE',
+                            },
+                        }
                 })
             },
             include: {
                 media: true
             }
-            
+
         })
-        if (file && oldMedia)
-        {
-            try{
+        if (file && oldMedia) {
+            try {
                 const imagePath = join(process.cwd(), `./${oldMedia}`)
                 unlinkSync(imagePath);
-            }catch {
+            } catch {
                 throw new BadRequestException('<Custom>: The file is already removed from server')
             }
         }
-        
+
         return ({ updatedPost });
     }
 
-    public async deletePost(postId: number, userId: number)
-    {
+    public async deletePost(postId: number, userId: number) {
         const club = await this.prisma.club.findUnique({
             where: { userId }
         })
@@ -144,25 +156,25 @@ export class PostService {
             }
         })
         // console.log(`${post.media.length}`)
-        try{
+        try {
             const imagePath = join(process.cwd(), `./${post.media[0].url}`)
             unlinkSync(imagePath);
 
-        }catch {
+        } catch {
             return ({ message: "The Post have already removed from the server" })
         }
 
         return ({ message: "The Post deleted successfully" })
     }
 
-    public async    getPost(postId: number, userId: number){
-        
+    public async getPost(postId: number, userId: number) {
+
         const post = await this.prisma.post.findUnique({
             where: { id: postId },
             include: {
                 media: true,
                 _count: {
-                    select: { 
+                    select: {
                         reactions: true,
                         comments: true
                     }
@@ -174,8 +186,7 @@ export class PostService {
             throw new NotFoundException('post Not found');
         let isLiked: boolean = false;
 
-        if ( userId !== undefined)
-        {
+        if (userId !== undefined) {
             const reaction = await this.prisma.reaction.findUnique({
                 where: {
                     userId_postId: {
@@ -188,11 +199,11 @@ export class PostService {
                 isLiked = true;
         }
 
-        return ( {post, isLiked} );
+        return ({ post, isLiked });
     }
-    
+
     public async getAllPosts(cursor: number | undefined, userId: number) {
-        
+
         const limit = 3;
 
         const posts = await this.prisma.post.findMany({
@@ -203,7 +214,7 @@ export class PostService {
                 })
             },
             take: limit + 1,
-            
+
             orderBy: { id: 'desc' },
             include: {
                 media: true,
@@ -224,13 +235,13 @@ export class PostService {
         //     throw new NotFoundException('posts Not found');
 
         const hasMorePosts: boolean = posts.length > limit;
-        
+
         if (hasMorePosts)
             posts.pop();
 
         const nextCursor = hasMorePosts ?
-                            posts[limit - 1].id
-                            : null
+            posts[limit - 1].id
+            : null
         const likedposts = posts.map((post) => {
             const { reactions, ...postData } = post;
             return ({
@@ -238,7 +249,7 @@ export class PostService {
                 isLiked: reactions.length > 0
             })
         })
-        return ( { posts: likedposts, hasMorePosts, nextCursor } );
+        return ({ posts: likedposts, hasMorePosts, nextCursor });
     }
 
 

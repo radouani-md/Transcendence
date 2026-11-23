@@ -5,13 +5,14 @@ import Image from "next/image";
 import profile from "../../public/images/mradouan7.jpg";
 import lamin from "../../public/images/imgae1.jpg";
 import lamin1 from "../../public/images/imgae2.jpg";
-import { ImageIcon, Video, MessageCircle, Heart, SendHorizontal } from 'lucide-react'
+import { ImageIcon, MessageCircle, Heart, SendHorizontal } from 'lucide-react'
 import { ProfilePicture } from "./ProfilePicture";
-import { ClubPost, CommentP, CommentsResponse, Post } from "@/types/post";
+import { ClubPost, CommentP, CommentsResponse, Post, PostMedia } from "@/types/post";
 import { likePost, unlikePost } from "@/lib/api/reaction";
 import { MdClear } from "react-icons/md";
 import CommentCard from "./CommentCard";
 import { getComments, postComment } from "@/lib/api/comment";
+import { ToastContainer, Bounce, toast } from "react-toastify";
 
 type ClubCardProps = {
     name: string;
@@ -23,8 +24,9 @@ type PostCardProps = {
 };
 
 export default function PostCard({ post }: PostCardProps) {
-    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInJvbGUiOiJDTFVCIiwiaWF0IjoxNzk1MzM1NjIzLCJleHAiOjE3OTU0MjIwMjN9.OdW1TPIM0V4LiPDC06sWQP91uJBhZZuKE18HXW5jmrI"; //club
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJGQU4iLCJpYXQiOjE3OTUzMzU0NzMsImV4cCI6MTc5NTQyMTg3M30.qVnPYZV4MrYj2RLzZrPjLZH05b9AbwAh5bMTdWEhwlA"; //fan
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInJvbGUiOiJDTFVCIiwiaWF0IjoxNzk1NDIzODk0LCJleHAiOjE3OTU1MTAyOTR9.1NgFWjiknrbr0ocF_bQ0S2-Y8aIWGTh_sr4wk3qBQVw"; //club
+    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJGQU4iLCJpYXQiOjE3OTU0MjQxNjAsImV4cCI6MTc5NTUxMDU2MH0.hvNTjh2LxEBVnWNmls_tJ5A7sEdfyB__BRoMxyiFo1s"; //fan
+    const toastId = `comments-${post.id}`;
     const [comments, setComments] = useState<CommentP[]>([]);
     const [nextCursor, setNextCursor] = useState<number | null>(null);
     const [hasMoreComments, setHasMoreComments] = useState(true);
@@ -44,7 +46,6 @@ export default function PostCard({ post }: PostCardProps) {
 
     useEffect(() => {
         if (!token) return;
-
         async function fetchComments() {
 
             try {
@@ -87,16 +88,23 @@ export default function PostCard({ post }: PostCardProps) {
     }
 
     async function postCommentHandler() {
-
         if (!token || !text.trim()) return;
         try {
             await postComment(token, post.id, text);
             setText('');
+            toast.success("Comment added successfully!", {
+                containerId: toastId,
+                autoClose: 3000,
+            })
             const data = await getComments(token, post.id);
             setComments(data.comments);
             setCommentsCount((prev) => prev + 1);
+
         }
         catch (error) {
+            toast.error("Failed to add comment!", {
+                containerId: "comments-toast"
+            })
             console.log("Failed to post comment:", error);
         }
 
@@ -117,13 +125,25 @@ export default function PostCard({ post }: PostCardProps) {
                 <div>
                     <p>{post.content}</p>
                 </div>
+                {post.media.length > 0 && post.media[0].type === "IMAGE" && (   //change the prisma from multiple image or video to one image or video 
+                    <Image
+                        src={`http://localhost:3002/${post.media[0].url}`}
+                        alt="Post image"
+                        width={0}
+                        height={0}
+                        unoptimized
+                        className="w-full rounded-2xl h-64 sm:h-100 object-cover"
+                    />
+                )}
 
-                <Image
-                    src={lamin}
-                    alt="lamin picture"
-                    className="w-full rounded-2xl h-64 sm:h-100 object-cover"
-                />
-
+                {post.media.length > 0 && post.media[0].type === "VIDEO" && (
+                    <video
+                        src={`http://localhost:3002/${post.media[0].url}`}
+                        controls
+                        preload="metadata"
+                        className="w-full rounded-2xl h-64 sm:h-100 object-cover"
+                    />
+                )}
                 <div className="border-t border-[#E5E7EB]" />
 
                 <div className="flex items-center gap-2">
@@ -148,7 +168,17 @@ export default function PostCard({ post }: PostCardProps) {
                         ref={dialogRef}
                         className="current-settings-dialoge m-auto w-4xl  rounded-2xl max-w-4xl h-[80vh] max-h-187.5"
                     >
+
                         <div className="flex flex-col h-full p-2 relative">
+                            <ToastContainer
+                                position="top-right"
+                                autoClose={3000}
+                                theme="light"
+                                containerId={toastId}
+                                closeOnClick={true}
+                                pauseOnFocusLoss={false}
+                                pauseOnHover={false}
+                            />
                             <div className="flex items-center justify-between px-5 py-4 border-b border-[#E5E7EB] shrink-0">
                                 <MessageCircle className="size-6" />
                                 <h2 className="font-bold text-[16px]"> Comments({commentsCount}) </h2>
@@ -174,13 +204,13 @@ export default function PostCard({ post }: PostCardProps) {
                                 <ProfilePicture path="" size="size-12" />
                                 <input
                                     type="text"
-                                    placeholder="Write a Comment "
+                                    placeholder="Write a Comment... "
                                     value={text}
-                                    onChange={(e)=> setText(e.target.value)}
+                                    onChange={(e) => setText(e.target.value)}
                                     className="flex-1 min-w-0 px-4 py-3 bg-[#F3F4F6] rounded-full focus:outline-none focus:ring-2 focus:ring-[#0055FF]"
                                 />
                                 <button
-                                onClick={postCommentHandler}
+                                    onClick={postCommentHandler}
                                     className="cursor-pointer hover:text-[#0055FF]"
                                 >
                                     <SendHorizontal className="size-7" />
