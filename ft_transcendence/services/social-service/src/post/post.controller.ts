@@ -18,7 +18,7 @@ export class PostController {
     @Post('api/club/post')
     @UseInterceptors(FileInterceptor('file', {
         storage: diskStorage({
-            destination: './images',
+            destination: './upload',
             filename: (req, file, cb) => {
                 const prefix = `${Date.now()}-${Math.random()*100000}`
                 const filename = `${prefix}-${file.originalname}`;
@@ -51,7 +51,7 @@ export class PostController {
     @Patch('api/club/post/:id')
     @UseInterceptors(FileInterceptor('file', {
         storage: diskStorage({
-            destination: './images',
+            destination: './upload',
             filename: (req, file, cb) => {
                 const prefix = `${Date.now()}-${Math.random()*100000}`
                 const filename = `${prefix}-${file.originalname}`;

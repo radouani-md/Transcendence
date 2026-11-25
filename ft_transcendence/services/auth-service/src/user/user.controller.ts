@@ -4,17 +4,17 @@ import { RegisterDto } from "./dtos/register.dto.js";
 
 
 
-@Controller('api/user')
+@Controller('auth')
 export class UserController {
     constructor (private readonly userService: UserService){}
 
-    @Post('auth/register')
+    @Post('register')
     public register(@Body() body: RegisterDto){
         return (this.userService.register(body))
     }
 
 
-    @Post('auth/login')
+    @Post('login')
     @HttpCode(HttpStatus.OK)
     public login(@Body() body: RegisterDto){
         return (this.userService.login(body))

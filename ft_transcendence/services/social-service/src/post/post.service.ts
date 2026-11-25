@@ -3,9 +3,9 @@ import { PostDto, UpdatePostDto } from "./dtos/post.dto.js";
 import { PrismaService } from "../prisma/prisma.service.js";
 import { MediaType } from "../generated/prisma/enums.js";
 import { join } from 'node:path';
+import { fileTypeFromBuffer, fileTypeFromFile } from "../../node_modules_backup/file-type/source/index.js";
+import { unlink } from 'node:fs/promises';
 import { unlinkSync } from "node:fs";
-import { fileTypeFromBuffer } from "../../node_modules_backup/file-type/source/index.js";
-
 @Injectable()
 export class PostService {
 
@@ -19,15 +19,26 @@ export class PostService {
             'video/mp4',
             'video/webm',
         ];
+        
         const { content } = postDto;
-        const fileBinary = await fileTypeFromBuffer(file.buffer);
-
-        if (fileBinary === undefined)
-            throw new UnsupportedMediaTypeException('Unknown file type');
-
-        if (!allowedMimeTypes.includes(fileBinary.mime)) {
-            throw new BadRequestException('Unsupported file type');
+        try
+        {
+            const fileBinary = await fileTypeFromFile(file.path);
+    
+            if (!fileBinary || !allowedMimeTypes.includes(fileBinary.mime)) {
+                throw new UnsupportedMediaTypeException('Unknown file type');
+            }
         }
+        catch (error)
+        {
+            try{
+                await unlink(file.path);
+            }catch (deleteError){
+                console.error('Failed to delete file:', deleteError);
+            }
+            throw error;
+        }
+
 
         const club = await this.prisma.club.findUnique({
             where: { userId }
@@ -146,7 +157,6 @@ export class PostService {
 
         if (!post)
             throw new NotFoundException("The post deosn't exist");
-        console.log(`-- ${post?.clubId} !== ${club.id}`)
         if (post?.clubId !== club.id)
             throw new ForbiddenException('You cannot delete post of someone else');
 
