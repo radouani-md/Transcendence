@@ -1,14 +1,14 @@
 import { PostMedia, PostsResponse } from "@/types/post";
+import { toast } from "react-toastify";
 
 const SOCIAL_API_URL =
     process.env.NEXT_PUBLIC_SOCIAL_API_URL;
 
-export async function getPosts(token: string,  cursor?: number | null): Promise<PostsResponse>
-{
+export async function getPosts(token: string, cursor?: number | null): Promise<PostsResponse> {
     const url = cursor !== undefined
-                           ? `${SOCIAL_API_URL}/api/post?cursor=${cursor}`
-                           : `${SOCIAL_API_URL}/api/post`
-                            
+        ? `/api/post?cursor=${cursor}`
+        : `/api/post`
+
     console.log(url)
     const response = await fetch(url, {
         method: "GET",
@@ -22,13 +22,12 @@ export async function getPosts(token: string,  cursor?: number | null): Promise<
     }
     const data = await response.json();
 
-    
+
     return (data)
 }
-export async function postPostMedia(token: string, media:File, content: string): Promise<PostsResponse>
-{
-    const url =`${SOCIAL_API_URL}/api/club/post`
-    
+export async function postPostMedia(token: string, media: File, content: string): Promise<PostsResponse> {
+    const url = `/api/club/post`
+
     const formData = new FormData();
     formData.append("content", content);
     formData.append("file", media);
@@ -45,12 +44,30 @@ export async function postPostMedia(token: string, media:File, content: string):
     });
 
     if (!response.ok) {
-        
+        const data = await response.json();
+        toast.error(data.message[0]);
         throw new Error("Failed to fetch posts");
     }
     const data = await response.json();
 
-    
     return (data)
 }
 
+export async function deletePost(token: string, postId: number) {
+    const url = `/api/club/post/${postId}`;
+
+    const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error(`Failed to unlike post: ${response.status}`);
+    }
+    const data = await response.json();
+
+
+    return (data);
+}

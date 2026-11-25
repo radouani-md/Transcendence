@@ -12,7 +12,7 @@ const ProductCard = () => {
 
         <article className="bg-white rounded-xl border border-[#E5E7EB] overflow-hidden">
             <Image
-                src={productImage}
+                src={productImage}   //1200 × 400
                 alt="Football product"
                 className="w-full h-48 object-cover"
             />

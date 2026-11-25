@@ -14,12 +14,13 @@ import { useEffect, useRef, useState } from "react";
 import { getPosts, postPostMedia } from "@/lib/api/social";
 import { Post, PostsResponse } from "@/types/post";
 import { toast } from "react-toastify";
+import { error } from "console";
 
 
 
 export default function HomePage() {
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInJvbGUiOiJDTFVCIiwiaWF0IjoxNzk1NDIzODk0LCJleHAiOjE3OTU1MTAyOTR9.1NgFWjiknrbr0ocF_bQ0S2-Y8aIWGTh_sr4wk3qBQVw" // club;
-    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJGQU4iLCJpYXQiOjE3OTU0MjQxNjAsImV4cCI6MTc5NTUxMDU2MH0.hvNTjh2LxEBVnWNmls_tJ5A7sEdfyB__BRoMxyiFo1s" //fan;
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInJvbGUiOiJDTFVCIiwiaWF0IjoxNzk1NjIyMzA1LCJleHAiOjE3OTU3MDg3MDV9.WLlKOdm4FYYu9UyUlJKe-zzuYS7wLOoQUwoc-DMxtKg" // club;
+    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJGQU4iLCJpYXQiOjE3OTU2MTgxMjMsImV4cCI6MTc5NTcwNDUyM30.TlgKf6PfOrJL4rCcAdObn7y-f-MPviALrsSuB80tRyk" //fan;
     const [posts, setPosts] = useState<Post[]>([]);
     const [nextCursor, setNextCursor] = useState<number | null>(null);
     const [hasMorePosts, setHasMorePosts] = useState(true);
@@ -114,15 +115,16 @@ export default function HomePage() {
 
 
     async function postPostsHandler() {
-        if (!token || !text.trim()) return;
-        if (!media) {
-            console.log("Please select an image or video");
+        if (!token) return;
+        if (!media || !text.trim()) {
+            toast.error("Please try to fill fields");
             return;
         }
         try {
 
             await postPostMedia(token, media, text);
             setText('');
+            toast.success('The post added successfully')
         }
         catch (error) {
             console.log("Failed to post Post:", error);
@@ -141,10 +143,13 @@ export default function HomePage() {
                 className="hidden"
                 onChange={(e) => {
                     const file = e.target.files?.[0];
-                    if (file) setMedia(file);
+                    if (file && file?.size > 50 * 1024 * 1024)
+                        toast.error("error size too large");
+                    else if (file) setMedia(file);
+
                     if (!file?.type.startsWith('image'))
-                         toast.error("error uploading must be image");
-                        
+                        toast.error("error uploading must be image");
+
                 }}
             />
 
@@ -155,7 +160,10 @@ export default function HomePage() {
                 className="hidden"
                 onChange={(e) => {
                     const file = e.target.files?.[0];
-                    if (file) setMedia(file);
+                    if (file && file?.size > 50 * 1024 * 1024)
+                        toast.error("error size too large");
+                    else if (file) setMedia(file);
+
                     if (!file?.type.startsWith('video'))
                         toast.error("error uploading must be video");
                 }}
@@ -168,9 +176,10 @@ export default function HomePage() {
                         <input
                             type="text"
                             value={text}
-                            placeholder="What's on your mind about today's matches?"
+                            placeholder="What's on your mind ?"
+                            maxLength={255} //add this
                             onChange={(e) => setText(e.target.value)}
-                            className="flex-1 min-w-0 px-4 py-3 bg-[#F3F4F6] rounded-full focus:outline-none focus:ring-2 focus:ring-[#0055FF]"
+                            className={`flex-1 min-w-0 px-4 py-3 bg-[#F3F4F6] rounded-full focus:outline-none ${text.length > 250 ? "border-2 border-[#EF4444]" : "focus:ring-2 focus:ring-[#0055FF]"}`}
                         />
                     </div>
 
@@ -181,7 +190,7 @@ export default function HomePage() {
                             <button
                                 type="button"
                                 onClick={() => document.getElementById('photo-upload')?.click()}
-                                className={`flex items-center gap-2 px-2 sm:px-3 py-2 font-medium ${media?.type.startsWith('image') ? "border bg-[#d0d9eb]":""} rounded-lg bg-[#F3F4F6] text-[#0055FF] cursor-pointer hover:bg-[#d0d9eb] transition-colors duration-200`}
+                                className={`flex items-center gap-2 px-2 sm:px-3 py-2 font-medium ${media?.type.startsWith('image') ? "border bg-[#d0d9eb]" : ""} rounded-lg bg-[#F3F4F6] text-[#0055FF] cursor-pointer hover:bg-[#d0d9eb] transition-colors duration-200`}
                             >
                                 <ImageIcon className="w-5 h-5 text-[#0055FF]" />
                                 <span>Photo</span>
@@ -190,7 +199,7 @@ export default function HomePage() {
                             <button
                                 type="button"
                                 onClick={() => document.getElementById('video-upload')?.click()}
-                                className={`flex items-center gap-2 bg-[#F3F4F6] text-[#FF4D00] px-2 sm:px-3 py-2 ${media?.type.startsWith('video') ? "border bg-[#d0d9eb]":""} rounded-lg cursor-pointer hover:bg-[#d0d9eb] transition-colors duration-200`}
+                                className={`flex items-center gap-2 bg-[#F3F4F6] text-[#FF4D00] px-2 sm:px-3 py-2 ${media?.type.startsWith('video') ? "border bg-[#d0d9eb]" : ""} rounded-lg cursor-pointer hover:bg-[#d0d9eb] transition-colors duration-200`}
                             >
                                 <Video className="w-5 h-5 text-[#FF4D00]" />
                                 Video

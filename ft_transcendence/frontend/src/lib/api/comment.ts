@@ -3,7 +3,7 @@ const SOCIAL_API_URL =
 
 export async function postComment(token: string,  postId: number, content:string)
 {
-    const url = `${SOCIAL_API_URL}/api/post/${postId}/comment`;
+    const url = `/api/post/${postId}/comment`;
     console.log(url)
     const response = await fetch(url, {
         method: "POST",
@@ -25,7 +25,7 @@ export async function postComment(token: string,  postId: number, content:string
 
 export async function getComments(token: string, postId: number, cursor?: number)
 {
-    let url = `${SOCIAL_API_URL}/api/post/${postId}/comment`;
+    let url = `/api/post/${postId}/comment`;
                             
     console.log(url)
     const response = await fetch(url, {
