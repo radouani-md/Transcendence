@@ -5,7 +5,7 @@ import Image from "next/image";
 import profile from "../../public/images/mradouan7.jpg";
 import lamin from "../../public/images/imgae1.jpg";
 import lamin1 from "../../public/images/imgae2.jpg";
-import { ImageIcon, MessageCircle, Heart, SendHorizontal } from 'lucide-react'
+import { ImageIcon, MessageCircle, Heart, SendHorizontal, Ellipsis, Trash2 } from 'lucide-react'
 import { ProfilePicture } from "./ProfilePicture";
 import { ClubPost, CommentP, CommentsResponse, Post, PostMedia } from "@/types/post";
 import { likePost, unlikePost } from "@/lib/api/reaction";
@@ -13,6 +13,7 @@ import { MdClear } from "react-icons/md";
 import CommentCard from "./CommentCard";
 import { getComments, postComment } from "@/lib/api/comment";
 import { ToastContainer, Bounce, toast } from "react-toastify";
+import { deletePost } from "@/lib/api/social";
 
 type ClubCardProps = {
     name: string;
@@ -24,9 +25,11 @@ type PostCardProps = {
 };
 
 export default function PostCard({ post }: PostCardProps) {
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInJvbGUiOiJDTFVCIiwiaWF0IjoxNzk1NDIzODk0LCJleHAiOjE3OTU1MTAyOTR9.1NgFWjiknrbr0ocF_bQ0S2-Y8aIWGTh_sr4wk3qBQVw"; //club
-    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJGQU4iLCJpYXQiOjE3OTU0MjQxNjAsImV4cCI6MTc5NTUxMDU2MH0.hvNTjh2LxEBVnWNmls_tJ5A7sEdfyB__BRoMxyiFo1s"; //fan
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInJvbGUiOiJDTFVCIiwiaWF0IjoxNzk1NjIyMzA1LCJleHAiOjE3OTU3MDg3MDV9.WLlKOdm4FYYu9UyUlJKe-zzuYS7wLOoQUwoc-DMxtKg"; //club
+    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJGQU4iLCJpYXQiOjE3OTU2MTgxMjMsImV4cCI6MTc5NTcwNDUyM30.TlgKf6PfOrJL4rCcAdObn7y-f-MPviALrsSuB80tRyk"; //fan
     const toastId = `comments-${post.id}`;
+    const [isDeleted, seIsDeleted] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [comments, setComments] = useState<CommentP[]>([]);
     const [nextCursor, setNextCursor] = useState<number | null>(null);
     const [hasMoreComments, setHasMoreComments] = useState(true);
@@ -34,6 +37,7 @@ export default function PostCard({ post }: PostCardProps) {
     const [isLoadingMore, setIsLoadingMore] = useState(false);
     const observerRef = useRef<HTMLDivElement | null>(null);
     const loadingRef = useRef(false);
+    const menuRef = useRef<HTMLDivElement>(null);
 
     const [isLiked, setLike] = useState(post.isLiked);
     const [likesCount, setLikesCount] = useState(post._count.reactions);
@@ -88,6 +92,7 @@ export default function PostCard({ post }: PostCardProps) {
     }
 
     async function postCommentHandler() {
+
         if (!token || !text.trim()) return;
         try {
             await postComment(token, post.id, text);
@@ -110,24 +115,87 @@ export default function PostCard({ post }: PostCardProps) {
 
     }
 
+    useEffect(() => {
+        if (!isMenuOpen) return;
+
+        function handleClickOutside(event: PointerEvent) {
+            if (
+                menuRef.current &&
+                !menuRef.current.contains(event.target as Node)
+            ) {
+                setIsMenuOpen(false);
+            }
+        }
+
+        document.addEventListener("pointerdown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("pointerdown", handleClickOutside);
+        };
+    }, [isMenuOpen]);
+
+    async function deletePostHnadler() {
+
+        if (!token) return;
+        try {
+            await deletePost(token, post.id);
+            setIsMenuOpen(false);
+            seIsDeleted(true);
+            toast.success("Post has been deleted successfully!")
+        }
+        catch (error) {
+            toast.error("Failed remove post!", {
+                containerId: "comments-toast"
+            })
+        }
+
+    }
+
+
     return (
-        <article className="bg-white rounded-xl border border-[#E5E7EB] p-4">
+        <article className={`bg-white rounded-xl border border-[#E5E7EB] p-4 ${isDeleted ? "hidden" : ""}`}>
             <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-4">
-                    <div className="flex items-center gap-4">
-                        <ProfilePicture path="" size="size-12" />
-                        <div>
-                            <p className="text-sm font-semibold">mohammed radouani</p>
-                            <p className="text-xs text-[#6B7280]">@radouani-md</p>
+                <div className="flex justify-between">
+                    <div className="flex flex-col gap-4">
+                        <div className="flex items-center gap-4">
+                            <ProfilePicture path="" size="size-12" />
+                            <div>
+                                <p className="text-sm font-semibold">mohammed radouani</p>
+                                <p className="text-xs text-[#6B7280]">@radouani-md</p>
+                            </div>
                         </div>
+
+                    </div>
+                    <div className="relative" ref={menuRef}>
+
+                        <button
+                            type="button"
+                            onClick={() => setIsMenuOpen((prev) => !prev)}
+                            className="p-2 rounded-lg text-[#6B7280] hover:bg-[#F3F4F6] cursor-pointer shrink-0"
+                            aria-label="Post options"
+                        >
+                            <Ellipsis className="size-5" />
+                        </button>
+                        {isMenuOpen && (
+                            <div className="absolute right-0 top-7 mt-2 w-44 bg-white border border-[#E5E7EB] rounded-lg shadow-lg p-1">
+                                <button
+                                    type="button"
+                                    onClick={deletePostHnadler}
+                                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-[#EF4444] hover:bg-[#FEF2F2] rounded-md cursor-pointer"
+                                >
+                                    <Trash2 className="size-4" />
+                                    <span>Delete Post</span>
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div>
-                    <p>{post.content}</p>
+                    <p className="wrap-break-word">{post.content}</p>
                 </div>
                 {post.media.length > 0 && post.media[0].type === "IMAGE" && (   //change the prisma from multiple image or video to one image or video 
                     <Image
-                        src={`http://localhost:3002/${post.media[0].url}`}
+                        src={`/${post.media[0].url}`} // 1280 × 720 px
                         alt="Post image"
                         width={0}
                         height={0}
@@ -138,10 +206,10 @@ export default function PostCard({ post }: PostCardProps) {
 
                 {post.media.length > 0 && post.media[0].type === "VIDEO" && (
                     <video
-                        src={`http://localhost:3002/${post.media[0].url}`}
+                        src={`/${post.media[0].url}`}
                         controls
                         preload="metadata"
-                        className="w-full rounded-2xl h-64 sm:h-100 object-cover"
+                        className="w-full rounded-2xl h-64 sm:h-100 aspect-video object-cover"
                     />
                 )}
                 <div className="border-t border-[#E5E7EB]" />
@@ -166,7 +234,7 @@ export default function PostCard({ post }: PostCardProps) {
                     </button>
                     <dialog
                         ref={dialogRef}
-                        className="current-settings-dialoge m-auto w-4xl  rounded-2xl max-w-4xl h-[80vh] max-h-187.5"
+                        className="current-settings-dialoge m-auto w-[80%]  rounded-2xl max-w-4xl h-[80vh] max-h-187.5 sm:w-[85%] lg:w-4xl sm:h-[80dvh]"
                     >
 
                         <div className="flex flex-col h-full p-2 relative">
@@ -206,6 +274,7 @@ export default function PostCard({ post }: PostCardProps) {
                                     type="text"
                                     placeholder="Write a Comment... "
                                     value={text}
+                                    maxLength={250}
                                     onChange={(e) => setText(e.target.value)}
                                     className="flex-1 min-w-0 px-4 py-3 bg-[#F3F4F6] rounded-full focus:outline-none focus:ring-2 focus:ring-[#0055FF]"
                                 />

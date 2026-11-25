@@ -3,9 +3,8 @@ const SOCIAL_API_URL =
 
 export async function likePost(token: string,  postId: number)
 {
-    const url = `${SOCIAL_API_URL}/api/post/${postId}/like`;
+    const url = `/api/post/${postId}/like`;
                             
-    console.log(url)
     const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -24,7 +23,7 @@ export async function likePost(token: string,  postId: number)
 
 export async function unlikePost(token: string,  postId: number)
 {
-    const url = `${SOCIAL_API_URL}/api/post/${postId}/like`;
+    const url = `/api/post/${postId}/like`;
                             
     console.log(url)
     const response = await fetch(url, {
