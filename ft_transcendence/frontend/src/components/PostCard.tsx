@@ -25,7 +25,7 @@ type PostCardProps = {
 };
 
 export default function PostCard({ post }: PostCardProps) {
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInJvbGUiOiJDTFVCIiwiaWF0IjoxNzk1NjIyMzA1LCJleHAiOjE3OTU3MDg3MDV9.WLlKOdm4FYYu9UyUlJKe-zzuYS7wLOoQUwoc-DMxtKg"; //club
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInJvbGUiOiJDTFVCIiwiaWF0IjoxNzk1NzA4OTU2LCJleHAiOjE3OTU3OTUzNTZ9.o6Givryyc73HApTVphk2iIP6SOVWl0F9JmrsV-t1ZWk"; //club
     // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJGQU4iLCJpYXQiOjE3OTU2MTgxMjMsImV4cCI6MTc5NTcwNDUyM30.TlgKf6PfOrJL4rCcAdObn7y-f-MPviALrsSuB80tRyk"; //fan
     const toastId = `comments-${post.id}`;
     const [isDeleted, seIsDeleted] = useState(false);

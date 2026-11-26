@@ -106,6 +106,37 @@ services:
       postgres:
         condition: service_healthy
 
+  marketplace-service:
+    command: sh -c "npx prisma generate && npm run start:dev -- --no-shell"
+    build:
+      context: ./services/marketplace-service
+
+    container_name: touchline-marketplace
+
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    environment:
+      DATABASE_URL: ${SOCIAL_DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      PORT: "3000"
+
+    ports:
+      - "127.0.0.1:3007:3000"
+
+    networks:
+      - database
+      - app
+    volumes:
+      - ./services/marketplace-service:/app
+      - /app/node_modules
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   frontend:
     command: npm run dev
 

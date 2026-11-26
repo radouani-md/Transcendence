@@ -1,3 +1,4 @@
+import { Product } from "./product";
 
 type MediaType = "IMAGE" | "VIDEO";
 
@@ -42,6 +43,8 @@ export type PostsResponse = {
     hasMorePosts: boolean;
     nextCursor: number | null;
 };
+
+
 export type CommentsResponse = {
     comments: CommentP[];
 };

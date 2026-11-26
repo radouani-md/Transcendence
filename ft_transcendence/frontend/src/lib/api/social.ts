@@ -3,10 +3,11 @@ import { toast } from "react-toastify";
 
 const SOCIAL_API_URL =
     process.env.NEXT_PUBLIC_SOCIAL_API_URL;
+    // const SOCIAL_API_URL = "http://localhost:3002";
 
 export async function getPosts(token: string, cursor?: number | null): Promise<PostsResponse> {
     const url = cursor !== undefined
-        ? `/api/post?cursor=${cursor}`
+        ? `${SOCIAL_API_URL}/api/post?cursor=${cursor}`
         : `/api/post`
 
     console.log(url)
