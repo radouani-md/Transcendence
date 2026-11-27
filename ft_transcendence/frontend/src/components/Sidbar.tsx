@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "../../public/images/Logo.png";
-import { House, Users, Store, Ticket, Settings, Monitor, MessagesSquare} from "lucide-react";
+import { House, Users, Store, Ticket, Settings, Monitor, MessagesSquare, UserRound } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { LiaTvSolid } from "react-icons/lia";
 import path from "path";
@@ -19,6 +19,7 @@ const Sidbar = () =>
     const isSettings = pathname === '/settings';
     const isMatches = pathname === '/matches';
     const isChat = pathname === '/chat';
+    const isProfile = pathname === '/profile'
     
 
 
@@ -63,6 +64,11 @@ const Sidbar = () =>
                 <Link href="/chat" className={`flex items-center gap-3 px-4 py-2  hover:bg-[#EFF6FF] hover:text-[#0055FF] hover:border-r-4 hover:border-[#0055FF] transition-colors duration-200 rounded-xl ${isChat? "bg-[#EFF6FF] text-[#0055FF] border-r-4 border-[#0055FF]":""}`} >
                     <MessagesSquare className="w-5 h-5" />
                     <span> Chat </span>
+                </Link>
+
+                <Link href="/profile" className={`flex items-center gap-3 px-4 py-2  hover:bg-[#EFF6FF] hover:text-[#0055FF] hover:border-r-4 hover:border-[#0055FF] transition-colors duration-200 rounded-xl ${isProfile? "bg-[#EFF6FF] text-[#0055FF] border-r-4 border-[#0055FF]":""}`} >
+                    <UserRound className="w-5 h-5" />
+                    <span> Profile </span>
                 </Link>
 
                 <Link href="/settings" className={`flex items-center gap-3 px-4 py-2  hover:bg-[#EFF6FF] hover:text-[#0055FF] hover:border-r-4 hover:border-[#0055FF] transition-colors duration-200 rounded-xl ${isSettings? "bg-[#EFF6FF] text-[#0055FF] border-r-4 border-[#0055FF]":""}`} >
