@@ -1,175 +1,175 @@
 name: touchline-dev
 
 services:
-  postgres:
-    image: postgres:17-bookworm
-    container_name: touchline-postgres
+  # postgres:
+  #   image: postgres:17-bookworm
+  #   container_name: touchline-postgres
 
-    healthcheck:
-      test:
-        - CMD-SHELL
-        - pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"
-      interval: 5s
-      timeout: 5s
-      retries: 10
-      start_period: 30s
+  #   healthcheck:
+  #     test:
+  #       - CMD-SHELL
+  #       - pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 10
+  #     start_period: 30s
 
-    restart: unless-stopped
+  #   restart: unless-stopped
 
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:?required}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?required}
-      POSTGRES_DB: ${POSTGRES_DB:?required}
+  #   environment:
+  #     POSTGRES_USER: ${POSTGRES_USER:?required}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?required}
+  #     POSTGRES_DB: ${POSTGRES_DB:?required}
 
-    ports:
-      - "127.0.0.1:5433:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - database
+  #   ports:
+  #     - "127.0.0.1:5433:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   networks:
+  #     - database
 
-  nginx:
-    image: nginx:alpine
-    container_name: touchline-nginx
-    ports:
-      - "8443:443"
-    volumes:
-      - ./infrastructure/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./infrastructure/nginx/ssl:/etc/nginx/ssl:ro
-    depends_on:
-      - frontend
-      - auth-service
-      - social-service
-    networks:
-      - app
+  # nginx:
+  #   image: nginx:alpine
+  #   container_name: touchline-nginx
+  #   ports:
+  #     - "8443:443"
+  #   volumes:
+  #     - ./infrastructure/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./infrastructure/nginx/ssl:/etc/nginx/ssl:ro
+  #   depends_on:
+  #     - frontend
+  #     - auth-service
+  #     - social-service
+  #   networks:
+  #     - app
 
-  auth-service:
-    command: sh -c "npx prisma generate && npm run start:dev -- --no-shell"
-    build:
-      context: ./services/auth-service
+  # auth-service:
+  #   command: sh -c "npx prisma generate && npm run start:dev -- --no-shell"
+  #   build:
+  #     context: ./services/auth-service
 
-    container_name: touchline-auth
+  #   container_name: touchline-auth
 
-    env_file:
-      - .env
+  #   env_file:
+  #     - .env
 
-    environment:
-      DATABASE_URL: ${AUTH_DATABASE_URL}
-      JWT_SECRET: ${JWT_SECRET}
-      PORT: "3000"
+  #   environment:
+  #     DATABASE_URL: ${AUTH_DATABASE_URL}
+  #     JWT_SECRET: ${JWT_SECRET}
+  #     PORT: "3000"
 
-    restart: unless-stopped
+  #   restart: unless-stopped
 
-    ports:
-      - "127.0.0.1:3001:3000"
+  #   ports:
+  #     - "127.0.0.1:3001:3000"
 
-    volumes:
-      - ./services/auth-service:/app
-      - /app/node_modules
+  #   volumes:
+  #     - ./services/auth-service:/app
+  #     - /app/node_modules
 
-    networks:
-      - database
-      - app
+  #   networks:
+  #     - database
+  #     - app
 
-    depends_on:
-      postgres:
-        condition: service_healthy
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
 
-  social-service:
-    command: sh -c "npx prisma generate && npm run start:dev -- --no-shell"
-    build:
-      context: ./services/social-service
+  # social-service:
+  #   command: sh -c "npx prisma generate && npm run start:dev -- --no-shell"
+  #   build:
+  #     context: ./services/social-service
 
-    container_name: touchline-social
+  #   container_name: touchline-social
 
-    restart: unless-stopped
+  #   restart: unless-stopped
 
-    env_file:
-      - .env
+  #   env_file:
+  #     - .env
 
-    environment:
-      DATABASE_URL: ${SOCIAL_DATABASE_URL}
-      JWT_SECRET: ${JWT_SECRET}
-      PORT: "3000"
+  #   environment:
+  #     DATABASE_URL: ${SOCIAL_DATABASE_URL}
+  #     JWT_SECRET: ${JWT_SECRET}
+  #     PORT: "3000"
 
-    ports:
-      - "127.0.0.1:3002:3000"
+  #   ports:
+  #     - "127.0.0.1:3002:3000"
 
-    networks:
-      - database
-      - app
-    volumes:
-      - ./services/social-service:/app
-      - /app/node_modules
+  #   networks:
+  #     - database
+  #     - app
+  #   volumes:
+  #     - ./services/social-service:/app
+  #     - /app/node_modules
 
-    depends_on:
-      postgres:
-        condition: service_healthy
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
 
-  marketplace-service:
-    command: sh -c "npx prisma generate && npm run start:dev -- --no-shell"
-    build:
-      context: ./services/marketplace-service
+  # marketplace-service:
+  #   command: sh -c "npx prisma generate && npm run start:dev -- --no-shell"
+  #   build:
+  #     context: ./services/marketplace-service
 
-    container_name: touchline-marketplace
+  #   container_name: touchline-marketplace
 
-    restart: unless-stopped
+  #   restart: unless-stopped
 
-    env_file:
-      - .env
+  #   env_file:
+  #     - .env
 
-    environment:
-      DATABASE_URL: ${SOCIAL_DATABASE_URL}
-      JWT_SECRET: ${JWT_SECRET}
-      PORT: "3000"
+  #   environment:
+  #     DATABASE_URL: ${SOCIAL_DATABASE_URL}
+  #     JWT_SECRET: ${JWT_SECRET}
+  #     PORT: "3000"
 
-    ports:
-      - "127.0.0.1:3007:3000"
+  #   ports:
+  #     - "127.0.0.1:3007:3000"
 
-    networks:
-      - database
-      - app
-    volumes:
-      - ./services/marketplace-service:/app
-      - /app/node_modules
+  #   networks:
+  #     - database
+  #     - app
+  #   volumes:
+  #     - ./services/marketplace-service:/app
+  #     - /app/node_modules
 
-    depends_on:
-      postgres:
-        condition: service_healthy
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
 
-  profile-service:
-    command: sh -c "npx prisma generate && npm run start:dev -- --no-shell"
+  # profile-service:
+  #   command: sh -c "npx prisma generate && npm run start:dev -- --no-shell"
 
-    build:
-      context: ./services/profile-service
+  #   build:
+  #     context: ./services/profile-service
 
-    container_name: touchline-profile
+  #   container_name: touchline-profile
 
-    restart: unless-stopped
+  #   restart: unless-stopped
 
-    env_file:
-      - .env
+  #   env_file:
+  #     - .env
 
-    environment:
-      DATABASE_URL: ${SOCIAL_DATABASE_URL}
-      JWT_SECRET: ${JWT_SECRET}
-      PORT: "3000"
-      AUTH_SERVICE_URL: http://auth-service:3000
+  #   environment:
+  #     DATABASE_URL: ${SOCIAL_DATABASE_URL}
+  #     JWT_SECRET: ${JWT_SECRET}
+  #     PORT: "3000"
+  #     AUTH_SERVICE_URL: http://auth-service:3000
 
-    ports:
-      - "127.0.0.1:3003:3000"
+  #   ports:
+  #     - "127.0.0.1:3003:3000"
 
-    networks:
-      - database
-      - app
+  #   networks:
+  #     - database
+  #     - app
 
-    volumes:
-      - ./services/profile-service:/app
-      - /app/node_modules
+  #   volumes:
+  #     - ./services/profile-service:/app
+  #     - /app/node_modules
 
-    depends_on:
-      postgres:
-        condition: service_healthy
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
 
   frontend:
     command: npm run dev

@@ -3,8 +3,10 @@
 import Image from "next/image";
 import { Share2, Grid3X3, Bookmark ,Heart, MessageCircle, Bell} from "lucide-react";
 import { useState } from "react";
-import ImagePost from "@/components/ImagePost";
-
+import ImagePost from "@/components/components-profile/ImagePost";
+import ImageAvatar from "@/components/components-profile/ImageAvatar";
+import ImageCover from "@/components/components-profile/ImageCover";
+import InfoUser from "@/components/components-profile/InfoUser";
 
 export default function ProfilePage() {
 
@@ -12,41 +14,29 @@ export default function ProfilePage() {
   const [userTab, setuserTab] = useState(true);
   
   const photos = [
-    { src: "/images/posts1.png", alt: "Football photo 1"},
-    { src: "/images/posts2.png", alt: "Football photo 2"},
-    { src: "/images/posts3.png", alt: "Football photo 3"},
-    { src: "/images/posts4.png", alt: "Football photo 4"},
-    { src: "/images/posts5.png", alt: "Football photo 5"},
-    { src: "/images/posts6.png", alt: "Football photo 6"},
-    { src: "/images/posts1.png", alt: "Football photo 1"},
-    { src: "/images/posts2.png", alt: "Football photo 2"},
-    { src: "/images/posts3.png", alt: "Football photo 3"},
-    { src: "/images/posts4.png", alt: "Football photo 4"},
+    { id:1, src: "/images/posts1.png", alt: "Football photo 1"},
+    { id:2, src: "/images/posts2.png", alt: "Football photo 2"},
+    { id:3, src: "/images/posts3.png", alt: "Football photo 3"},
+    { id:4, src: "/images/posts4.png", alt: "Football photo 4"},
+    { id:5, src: "/images/posts5.png", alt: "Football photo 5"},
+    { id:6, src: "/images/posts6.png", alt: "Football photo 6"},
+    { id:7, src: "/images/posts1.png", alt: "Football photo 1"},
+    { id:8, src: "/images/posts2.png", alt: "Football photo 2"},
+    { id:9, src: "/images/posts3.png", alt: "Football photo 3"},
+    { id:10, src: "/images/posts4.png", alt: "Football photo 4"},
   ];
+
+  const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
 
   return (
     <main className="min-h-screen bg-[#ebebeb] p-4">
       <div className="relative rounded-2xl bg-white">
 
         {/* Cover image */}
-        <div className="relative h-[220px] w-full">
-          <Image
-            src="/images/cover.png"
-            alt="Profile cover"
-            fill
-            className="rounded-t-2xl object-cover"
-          />
-        </div>
+        < ImageCover />
 
-        {/* Avatar */}
-        <div className="absolute left-6 top-[172px] w-24 h-24">
-          <Image
-            src="/images/mradouan7.jpg"
-            alt="Profile avatar"
-            fill
-            className="rounded-full object-cover border-2 border-white"
-          />
-        </div>
+        {/* Avatar image*/}
+        < ImageAvatar />
 
         {/* Space below avatar */}
         <div className="h-12" />
@@ -55,13 +45,7 @@ export default function ProfilePage() {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-6">
 
           {/* User information */}
-          <div className=" h-full w-[350px]">
-            <h1 className="text-2xl font-bold">YoussefLagzouli</h1>
-
-            <p className="text-xl font-medium text-[#6B7280]">@ylagzoul</p>
-
-            <p className="mt-2">Football fan who loves watching matches. ljkgs ag ...</p>
-          </div>
+          < InfoUser />
 
           {/* Profile actions */}
           <div className="ml-auto self-end md:self-start flex items-center gap-2 font-medium">
@@ -103,26 +87,44 @@ export default function ProfilePage() {
 
             <button 
               type="button"
-              onClick={() => setActiveTab("Saved")}
+              onClick={() => setActiveTab("saved posts")}
               className={`text-[#6B7280] pb-3 flex items-center gap-3 ${
-                activeTab === "Saved" ? "font-semibold text-[#0055FF] border-b-[3px] border-[#0055FF] pb-3" : "text-[#6B7280] pb-3" }`}
+                activeTab === "saved posts" ? "font-semibold text-[#0055FF] border-b-[3px] border-[#0055FF] pb-3" : "text-[#6B7280] pb-3" }`}
             >
               <Bookmark className="w-4 h-4"/>
               Saved Posts
             </button>
           </div>
 
-          <div className="border-t border-[#E5E7EB] p-6"/>
+          <div className="border-t border-[#E5E7EB]"/>
+            {/* saved posts */}
+            {activeTab === "saved posts" && (
+              <p className="text-center pt-20 pb-110 text-[#6B7280]">
+                <Bookmark className="w-5 h-5"/>
+                No saved posts yet.
+              </p>
+            )}
+
+            {/* posts image */}
+            {activeTab === "posts" && (
+              <div className="mt-4 grid grid-cols-3 lg:grid-cols-4 gap-0.5">
+                {photos.map((photo) => (
+                  <ImagePost key={photo.id} setSelectedPhoto={setSelectedPhoto} src={photo.src} alt={photo.alt} />
+                ))}
+              </div>
+            )}
+            
+            {/* {selectedPhoto && (
+              <div>
+                <Image 
+                src= {selectedPhoto}
+                alt= "Selected photo"
+                fill
+                className="object-cover"/>
+              </div>
+            )} */}
           
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-0.5">
 
-            {photos.map((photo) => (
-              <ImagePost src={photo.src} alt={photo.alt} />
-            ))}
-
-          </div>
-
-          
         </div>
 
         <div className="h-12" />
